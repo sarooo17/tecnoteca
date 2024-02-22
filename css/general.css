@@ -1,0 +1,233 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+html,
+body {
+    margin: 0px;
+    font-family: "Inter";
+}
+
+/* Navbar base styles */
+.navbar {
+    background: rgb(255, 255, 255);
+    background: linear-gradient(180deg,
+            rgba(255, 255, 255, 1) -15%,
+            rgba(255, 255, 255, 0) 130%);
+    backdrop-filter: blur(20px);
+    padding: 0 15vw;
+    position: sticky;
+    overflow: hidden;
+    top: 0;
+    z-index: 100;
+    height: 48px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1024px;
+}
+
+.navbar .container li {
+    list-style: none;
+}
+
+.navbar-links-left {
+    width: 30vw;
+    display: flex;
+    gap: 32px;
+}
+
+.navbar a {
+    color: #3a3a3a;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    color: #111111;
+}
+
+/* Logo al centro */
+.navbar-logo {
+    flex-grow: 1;
+    text-align: center;
+    width: 10vw;
+}
+
+.navbar-logo img {
+    height: 48px;
+    width: auto;
+}
+
+/* Icons */
+.navbar-icons {
+    display: flex;
+    justify-content: flex-end; 
+    width: 30vw;
+    gap: 16px;
+    align-items: center;
+}
+
+.navbar-icons i {
+    align-items: center;
+    font-size: 17px;
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-input {
+    position: absolute;
+    left: -180px;
+    top: -2px;
+}
+
+.search-input input[type="search"] {
+    border: 2px solid #111111;
+    background-color: transparent;
+    padding: 3%;
+    width: 170px;
+    height: 26px;
+    color: #111111;
+    outline: none;
+    border-radius: 50px;
+}
+
+#closeIcon {
+    font-size: 14px;
+    color: #111111;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+}
+
+/* footer */
+
+.footer-distributed {
+    background-color: #111111;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    width: 100%;
+    text-align: left;
+    font: normal 16px sans-serif;
+    padding: 45px 50px;
+}
+
+.footer-distributed .footer-left p {
+    color: #8f9296;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Footer links */
+
+.footer-distributed p.footer-links {
+    font-size: 18px;
+    font-weight: bold;
+    color: #FCFCFC;
+    margin: 0 0 10px;
+    padding: 0;
+    transition: ease 0.25s;
+}
+
+.footer-distributed p.footer-links a {
+    display: inline-block;
+    line-height: 1.8;
+    text-decoration: none;
+    color: inherit;
+    transition: ease 0.25s;
+}
+
+.footer-distributed .footer-links a:before {
+    content: "·";
+    font-size: 20px;
+    left: 0;
+    color: #FCFCFC;
+    display: inline-block;
+    padding-right: 5px;
+}
+
+.footer-distributed .footer-links .link-1:before {
+    content: none;
+}
+
+.footer-distributed .footer-right {
+    float: right;
+    margin-top: 6px;
+    max-width: 180px;
+}
+
+.footer-distributed .footer-right a {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    background-color: #33383b;
+    border-radius: 2px;
+    font-size: 20px;
+    color: #FCFCFC;
+    text-align: center;
+    line-height: 35px;
+    margin-left: 3px;
+    transition: all 0.25s;
+}
+
+.footer-distributed .footer-right a:hover {
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+}
+
+.footer-distributed p.footer-links a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+
+    .footer-distributed .footer-left,
+    .footer-distributed .footer-right {
+        text-align: center;
+    }
+
+    .footer-distributed .footer-right {
+        float: none;
+        margin: 0 auto 20px;
+    }
+
+    .footer-distributed .footer-left p.footer-links {
+        line-height: 1.8;
+    }
+}
+
+.footer-distributed .footer-logo img {
+    height: 50vh;
+    margin-top: 50px;
+}
+
+.footer-distributed .footer-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bottoni {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.space {
+    height: 20px;
+    width: auto;
+}
