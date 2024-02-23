@@ -144,6 +144,15 @@ ol {
 
 .filter-subnav {
     padding-top: 32px;
+    padding-right: 320px;
+    padding-left: 320px;
+}
+
+@media screen and (max-width: 1800px) {
+    .filter-subnav {
+        padding-right: 72px;
+        padding-left: 72px;
+    }
 }
 
 .filter-type {

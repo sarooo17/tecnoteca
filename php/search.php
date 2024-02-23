@@ -55,7 +55,7 @@
         </div>
     </section>
     <section id="filter-section">
-        <div class="filter-subnav container-fluid">
+        <div class="filter-subnav">
             <div class="filter-type">
                 <div class="filter-categories">
                     <ul>
