@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>Saro tecnoteca</title>
+    <link id="favicon" rel="icon" href="./img/logo/favicon.svg" />
+
     <link rel="stylesheet" type="text/css" href="./css/general.css">
 </head>
 <body>

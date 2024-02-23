@@ -17,7 +17,7 @@ body {
     position: sticky;
     overflow: hidden;
     top: 0;
-    z-index: 100;
+    z-index: 9999;
     height: 48px;
     align-items: center;
     display: flex;
@@ -58,7 +58,7 @@ body {
 }
 
 .navbar-logo img {
-    height: 48px;
+    height: 28px;
     width: auto;
 }
 
@@ -67,6 +67,7 @@ body {
     display: flex;
     justify-content: flex-end; 
     width: 30vw;
+    height: 20px;
     gap: 16px;
     align-items: center;
 }
@@ -80,10 +81,18 @@ body {
     position: relative;
 }
 
+#searchform {
+    right: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    height: 0%;
+}
+
 .search-input {
     position: absolute;
     left: -180px;
-    top: -2px;
+    top: -4px;
 }
 
 .search-input input[type="search"] {
