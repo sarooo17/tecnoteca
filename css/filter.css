@@ -1,0 +1,90 @@
+.filter-type {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-direction: row;
+	padding: 0 20px;
+}
+
+ul {
+	padding: 0;
+}
+
+.filter-categories {
+	position: relative;
+	text-align: center;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 20px;
+}
+
+.category {
+	display: inline-block;
+}
+
+.filter-categories .category.active > a {
+	background: #f8f7f4;
+}
+
+.filter-settings {
+	display: flex;
+	flex: 0 0 200px;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.category a {
+	display: inline-flex;
+	align-items: center;
+	height: 36px;
+	padding: 0 16px;
+	border-radius: 9999999px;
+	color: #0d0c22;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 20px;
+}
+
+.category a:link,
+.category a:visited {
+	transition: color 200ms ease;
+	color: #0d0c22;
+	text-decoration: none;
+}
+
+.category a:hover {
+	transition: 200ms ease;
+	color: #6e6d7a;
+}
+
+.filter-btn {
+	border-color: #e7e7e9;
+	border: 1.5px solid #e7e7e9;
+	background-color: #fff;
+	box-shadow: none;
+	color: #0d0c22;
+	line-height: 16px;
+	padding: 10px 20px;
+	border-radius: 9999999px;
+	font-weight: 600;
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	height: 40px;
+	transition: color 200ms ease;
+	outline: none;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	appearance: none;
+	font-size: 14px;
+}
+
+.filter-btn:hover {
+	transition: 200ms ease;
+	color: #6e6d7a;
+}
+
+.filter-btn i {
+	font-size: 16px;
+}

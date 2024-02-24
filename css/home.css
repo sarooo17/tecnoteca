@@ -1,0 +1,61 @@
+.row {
+	display: flex;
+	flex-direction: row;
+	margin: 0 auto;
+	width: 1032px;
+}
+
+.hero-title {
+	font-size: 28px;
+	color: #111111;
+	max-width: 700px;
+}
+
+.text-chiaro {
+	color: #b4b4b4;
+}
+
+#hero {
+	height: 300px;
+	display: flex;
+	align-items: center;
+}
+
+.where-we-are {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	max-width: 332px;
+	margin: auto 0;
+	margin-left: 20px;
+}
+
+.row-where {
+	display: flex;
+	flex-direction: row;
+	justify-content: end;
+}
+
+.col-where {
+	display: flex;
+	flex-direction: column;
+}
+
+.pin-point {
+	font-size: 32px;
+}
+
+.icon-position {
+	display: flex;
+	align-items: center;
+	margin: 0 10px;
+}
+
+.col-where p {
+	margin: 0;
+}
+
+.col-where a {
+	color: #0095af;
+	text-decoration: none;
+}

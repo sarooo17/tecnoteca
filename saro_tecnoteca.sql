@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 22, 2024 at 10:06 PM
+-- Generation Time: Feb 24, 2024 at 07:01 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,11 +29,21 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `articoli` (
   `id_articolo` int(11) NOT NULL,
-  `numero_inventario` int(11) NOT NULL,
+  `numero_inventario` varchar(11) NOT NULL,
   `stato` set('disponibile','guasto','in prestito','prenotato') NOT NULL,
   `fk_categoria` int(11) NOT NULL,
-  `fk_centro` int(11) NOT NULL
+  `fk_centro` int(11) NOT NULL,
+  `nome` varchar(30) NOT NULL,
+  `colore` varchar(20) NOT NULL,
+  `img` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `articoli`
+--
+
+INSERT INTO `articoli` (`id_articolo`, `numero_inventario`, `stato`, `fk_categoria`, `fk_centro`, `nome`, `colore`, `img`) VALUES
+(1, '123456', 'disponibile', 1, 1, 'hp', '919191', '../img/articoli/hp.png');
 
 -- --------------------------------------------------------
 
@@ -47,6 +57,19 @@ CREATE TABLE `categorie` (
   `tipologia` set('hardware','software') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `categorie`
+--
+
+INSERT INTO `categorie` (`id_categoria`, `categoria`, `tipologia`) VALUES
+(1, 'computer', 'hardware'),
+(2, 'ebook', 'hardware'),
+(4, 'monitor', 'hardware'),
+(5, 'mouse', 'hardware'),
+(8, 'tastiera', 'hardware'),
+(9, 'laptop', 'hardware'),
+(10, 'cuffie', 'hardware');
+
 -- --------------------------------------------------------
 
 --
@@ -55,10 +78,17 @@ CREATE TABLE `categorie` (
 
 CREATE TABLE `centri` (
   `id_centro` int(11) NOT NULL,
-  `nome` int(11) NOT NULL,
-  `via` int(11) NOT NULL,
+  `nome` varchar(20) NOT NULL,
+  `via` varchar(30) NOT NULL,
   `fk_città` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `centri`
+--
+
+INSERT INTO `centri` (`id_centro`, `nome`, `via`, `fk_città`) VALUES
+(1, 'centro 1', 'via pippo 25', 1);
 
 -- --------------------------------------------------------
 
@@ -174,19 +204,19 @@ ALTER TABLE `utenti`
 -- AUTO_INCREMENT for table `articoli`
 --
 ALTER TABLE `articoli`
-  MODIFY `id_articolo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_articolo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `categorie`
 --
 ALTER TABLE `categorie`
-  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `centri`
 --
 ALTER TABLE `centri`
-  MODIFY `id_centro` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_centro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `città`

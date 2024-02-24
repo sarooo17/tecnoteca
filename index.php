@@ -5,6 +5,7 @@
     <link id="favicon" rel="icon" href="./img/logo/favicon.svg" />
 
     <link rel="stylesheet" type="text/css" href="./css/general.css">
+    <link rel="stylesheet" type="text/css" href="./css/home.css">
 </head>
 <body>
     <nav class="navbar">
@@ -30,12 +31,22 @@
             </div>
         </div>
     </nav>
-    <div id="hero" class="hero-container">
-        <div class="hero-text">
-            <h1>Saro Tecnoteca</h1>
-            <p>La tua libreria di fiducia</p>
+    <section id="hero">
+        <div class="row">
+            <div class="hero-title">
+                <h1>Store. <span class="text-chiaro">Dove amaerai prendere in prestito i prodotti che ami.</span></h1>
+            </div>
+            <div class="where-we-are">
+                <div class="row-where">
+                    <div class="icon-position"><i class="bi-2x bi-geo-alt pin-point"></i></div>
+                    <div class="col-where">
+                        <div><p>Vieni al Saro Store</p></div>
+                        <div><a href="./php/map.php">Trova il Saro Store più vicino ></a></div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
     <footer class="footer-distributed">
         <div class="footer-right">
             <a href="https://www.instagram.com/saro.riccardo/?igshid=MTk0NTkyODZkYg%3D%3D&utm_source=qr"

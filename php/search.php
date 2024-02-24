@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="../css/general.css">
     <link rel="stylesheet" type="text/css" href="../css/search.css">
     <link rel="stylesheet" type="text/css" href="../css/card.css">
-
+    <link rel="stylesheet" type="text/css" href="../css/filter.css">
 </head>
 
 <body>
@@ -189,7 +189,7 @@
                                 echo '<li>
                                         <div class="card"  style="--bg-card: #'.$colore.';">
                                             <div class="imgBx">
-                                                <img src="'.$img.'">
+                                                <img src="../img/articoli/'.$img.'">
                                             </div>
                                             <div class="contentBx">
                                                 <h2>'.ucfirst($nome).'</h2>
