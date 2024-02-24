@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 24, 2024 at 07:01 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Creato il: Feb 24, 2024 alle 12:54
+-- Versione del server: 10.4.8-MariaDB
+-- Versione PHP: 7.3.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -24,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `articoli`
+-- Struttura della tabella `articoli`
 --
 
 CREATE TABLE `articoli` (
@@ -36,29 +37,34 @@ CREATE TABLE `articoli` (
   `nome` varchar(30) NOT NULL,
   `colore` varchar(20) NOT NULL,
   `img` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `articoli`
+-- Dump dei dati per la tabella `articoli`
 --
 
 INSERT INTO `articoli` (`id_articolo`, `numero_inventario`, `stato`, `fk_categoria`, `fk_centro`, `nome`, `colore`, `img`) VALUES
-(1, '123456', 'disponibile', 1, 1, 'hp', '919191', '../img/articoli/hp.png');
+(1, '123456', 'disponibile', 1, 1, 'hp', '919191', 'hp.png'),
+(2, '111111', 'in prestito', 1, 1, 'macbook', '919191', 'hp.png'),
+(4, '111112', 'disponibile', 1, 1, 'dell', 'DAA520', 'hp.png'),
+(5, '111113', 'disponibile', 1, 1, 'acer', 'DAA520', 'hp.png'),
+(6, '111114', 'disponibile', 1, 1, 'msi', 'DAA520', 'hp.png'),
+(7, '111112', 'disponibile', 1, 1, 'microsoft', 'DAA520', 'hp.png');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categorie`
+-- Struttura della tabella `categorie`
 --
 
 CREATE TABLE `categorie` (
   `id_categoria` int(11) NOT NULL,
   `categoria` varchar(20) NOT NULL,
   `tipologia` set('hardware','software') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `categorie`
+-- Dump dei dati per la tabella `categorie`
 --
 
 INSERT INTO `categorie` (`id_categoria`, `categoria`, `tipologia`) VALUES
@@ -73,7 +79,7 @@ INSERT INTO `categorie` (`id_categoria`, `categoria`, `tipologia`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `centri`
+-- Struttura della tabella `centri`
 --
 
 CREATE TABLE `centri` (
@@ -81,10 +87,10 @@ CREATE TABLE `centri` (
   `nome` varchar(20) NOT NULL,
   `via` varchar(30) NOT NULL,
   `fk_città` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `centri`
+-- Dump dei dati per la tabella `centri`
 --
 
 INSERT INTO `centri` (`id_centro`, `nome`, `via`, `fk_città`) VALUES
@@ -93,7 +99,7 @@ INSERT INTO `centri` (`id_centro`, `nome`, `via`, `fk_città`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `città`
+-- Struttura della tabella `città`
 --
 
 CREATE TABLE `città` (
@@ -102,10 +108,10 @@ CREATE TABLE `città` (
   `cap` varchar(30) NOT NULL,
   `provincia` varchar(30) NOT NULL,
   `stato` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `città`
+-- Dump dei dati per la tabella `città`
 --
 
 INSERT INTO `città` (`id_città`, `nome`, `cap`, `provincia`, `stato`) VALUES
@@ -114,7 +120,7 @@ INSERT INTO `città` (`id_città`, `nome`, `cap`, `provincia`, `stato`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `prestiti`
+-- Struttura della tabella `prestiti`
 --
 
 CREATE TABLE `prestiti` (
@@ -124,12 +130,12 @@ CREATE TABLE `prestiti` (
   `data_scadenza_prestito` date NOT NULL,
   `fk_utente` int(11) NOT NULL,
   `fk_articolo` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `utenti`
+-- Struttura della tabella `utenti`
 --
 
 CREATE TABLE `utenti` (
@@ -141,21 +147,21 @@ CREATE TABLE `utenti` (
   `email` varchar(30) NOT NULL,
   `passmd5` varchar(80) NOT NULL,
   `tipologia_utente` set('cliente','operatore','admin') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `utenti`
+-- Dump dei dati per la tabella `utenti`
 --
 
 INSERT INTO `utenti` (`id_utente`, `nome`, `cognome`, `indirizzo`, `fk_città`, `email`, `passmd5`, `tipologia_utente`) VALUES
 (3, 'admin', 'admin', '', 1, 'admin@saro.com', '21232f297a57a5a743894a0e4a801fc3', 'admin');
 
 --
--- Indexes for dumped tables
+-- Indici per le tabelle scaricate
 --
 
 --
--- Indexes for table `articoli`
+-- Indici per le tabelle `articoli`
 --
 ALTER TABLE `articoli`
   ADD PRIMARY KEY (`id_articolo`),
@@ -163,26 +169,26 @@ ALTER TABLE `articoli`
   ADD KEY `fk_centro` (`fk_centro`);
 
 --
--- Indexes for table `categorie`
+-- Indici per le tabelle `categorie`
 --
 ALTER TABLE `categorie`
   ADD PRIMARY KEY (`id_categoria`);
 
 --
--- Indexes for table `centri`
+-- Indici per le tabelle `centri`
 --
 ALTER TABLE `centri`
   ADD PRIMARY KEY (`id_centro`),
   ADD KEY `fk_città` (`fk_città`);
 
 --
--- Indexes for table `città`
+-- Indici per le tabelle `città`
 --
 ALTER TABLE `città`
   ADD PRIMARY KEY (`id_città`);
 
 --
--- Indexes for table `prestiti`
+-- Indici per le tabelle `prestiti`
 --
 ALTER TABLE `prestiti`
   ADD PRIMARY KEY (`id_prestito`),
@@ -190,78 +196,78 @@ ALTER TABLE `prestiti`
   ADD KEY `fk_articolo` (`fk_articolo`);
 
 --
--- Indexes for table `utenti`
+-- Indici per le tabelle `utenti`
 --
 ALTER TABLE `utenti`
   ADD PRIMARY KEY (`id_utente`),
   ADD KEY `fk_città` (`fk_città`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT per le tabelle scaricate
 --
 
 --
--- AUTO_INCREMENT for table `articoli`
+-- AUTO_INCREMENT per la tabella `articoli`
 --
 ALTER TABLE `articoli`
-  MODIFY `id_articolo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_articolo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `categorie`
+-- AUTO_INCREMENT per la tabella `categorie`
 --
 ALTER TABLE `categorie`
   MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `centri`
+-- AUTO_INCREMENT per la tabella `centri`
 --
 ALTER TABLE `centri`
   MODIFY `id_centro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `città`
+-- AUTO_INCREMENT per la tabella `città`
 --
 ALTER TABLE `città`
   MODIFY `id_città` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `prestiti`
+-- AUTO_INCREMENT per la tabella `prestiti`
 --
 ALTER TABLE `prestiti`
   MODIFY `id_prestito` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `utenti`
+-- AUTO_INCREMENT per la tabella `utenti`
 --
 ALTER TABLE `utenti`
   MODIFY `id_utente` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Constraints for dumped tables
+-- Limiti per le tabelle scaricate
 --
 
 --
--- Constraints for table `articoli`
+-- Limiti per la tabella `articoli`
 --
 ALTER TABLE `articoli`
   ADD CONSTRAINT `articoli_ibfk_1` FOREIGN KEY (`fk_categoria`) REFERENCES `categorie` (`id_categoria`),
   ADD CONSTRAINT `articoli_ibfk_2` FOREIGN KEY (`fk_centro`) REFERENCES `centri` (`id_centro`);
 
 --
--- Constraints for table `centri`
+-- Limiti per la tabella `centri`
 --
 ALTER TABLE `centri`
   ADD CONSTRAINT `centri_ibfk_1` FOREIGN KEY (`fk_città`) REFERENCES `città` (`id_città`);
 
 --
--- Constraints for table `prestiti`
+-- Limiti per la tabella `prestiti`
 --
 ALTER TABLE `prestiti`
   ADD CONSTRAINT `prestiti_ibfk_1` FOREIGN KEY (`fk_utente`) REFERENCES `utenti` (`id_utente`),
   ADD CONSTRAINT `prestiti_ibfk_2` FOREIGN KEY (`fk_articolo`) REFERENCES `articoli` (`id_articolo`);
 
 --
--- Constraints for table `utenti`
+-- Limiti per la tabella `utenti`
 --
 ALTER TABLE `utenti`
   ADD CONSTRAINT `utenti_ibfk_1` FOREIGN KEY (`fk_città`) REFERENCES `città` (`id_città`);
