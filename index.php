@@ -26,15 +26,23 @@
                         </div>
                     </div>
                 </form>
-                <a href="./php/prestiti.php"><i class="bi bi-folder"></i></a>
-                <a href="./php/user.php"><i class="bi bi-person"></i></a>
+                <?php
+                session_start();
+
+                if(isset($_SESSION['user_id'])) {
+                    echo '<a href="./php/prestiti.php"><i class="bi bi-folder"></i></a>
+                          <a href="./php/user.php"><i class="bi bi-person"></i></a>';
+                } else {
+                    echo '<button class="button-21" role="button" onclick="window.location.href=\'./php/login.php\'">Accedi</button>';
+                }
+                ?>
             </div>
         </div>
     </nav>
     <section id="hero">
         <div class="row">
             <div class="hero-title">
-                <h1>Store. <span class="text-chiaro">Dove amaerai prendere in prestito i prodotti che ami.</span></h1>
+                <h1>Store. <span class="text-chiaro">Dove amerai prendere i prodotti che ami.</span></h1>
             </div>
             <div class="where-we-are">
                 <div class="row-where">

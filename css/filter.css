@@ -6,6 +6,19 @@
 	padding: 0 20px;
 }
 
+.filter-subnav {
+	max-width: 1032px;
+	margin-top: 32px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@media screen and (max-height: 650px) {
+	.filter-subnav {
+		margin-top: 18px;
+	}
+}
+
 ul {
 	padding: 0;
 }

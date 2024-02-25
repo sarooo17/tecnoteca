@@ -35,7 +35,37 @@
         </div>
     </nav>
     <section>
-        <!-- ispirarsi a coinbase -->
+        <!-- fare come pagina prodotto apple una riga due colonne sx text dx img -->
+
+        <?php
+        $productId = $_GET['productid'];
+
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "saro_tecnoteca";
+
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        $sql = "SELECT * FROM articoli WHERE id = $productId";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $productName = $row['name'];
+                $productDescription = $row['description'];
+            }
+        } else {
+            echo "Product not found";
+        }
+
+        $conn->close();
+        ?>
+        
     </section>
 </body>
 <script src="../js/general.js">
