@@ -36,7 +36,6 @@
     </nav>
     <section>
         <!-- fare come pagina prodotto apple una riga due colonne sx text dx img -->
-
         <?php
         $productId = $_GET['productid'];
 
@@ -51,19 +50,28 @@
             die("Connection failed: " . $conn->connect_error);
         }
 
-        $sql = "SELECT * FROM articoli WHERE id = $productId";
+        $sql = "SELECT * FROM articoli WHERE id_articolo= $productId";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $productName = $row['name'];
-                $productDescription = $row['description'];
+                $productName = $row['nome'];
+                $productDescription = $row['descrizione'];
+                $productImg = $row['img'];
             }
+
+            echo "<div class='row'>
+                    <div class='col-desc'>
+                        <h1>$productName</h1>
+                        <p>$productDescription</p>
+                    </div>
+                    <div class='col-img'>
+                        <img src='../img/products/$productImg' />
+                    </div>
+                </div>";
         } else {
             echo "Product not found";
         }
-
-        $conn->close();
         ?>
         
     </section>
