@@ -5,9 +5,8 @@
     <link id="favicon" rel="icon" href="../img/logo/favicon.svg" />
 
     <link rel="stylesheet" type="text/css" href="../css/general.css">
-    <link rel="stylesheet" type="text/css" href="../css/search.css">
-    <link rel="stylesheet" type="text/css" href="../css/card.css">
-    <link rel="stylesheet" type="text/css" href="../css/filter.css">
+    <link rel="stylesheet" type="text/css" href="../css/product.css">
+
 </head>
 
 <body>
@@ -34,8 +33,7 @@
             </div>
         </div>
     </nav>
-    <section>
-        <!-- fare come pagina prodotto apple una riga due colonne sx text dx img -->
+    <section id="product">
         <?php
         $productId = $_GET['productid'];
 
@@ -58,15 +56,61 @@
                 $productName = $row['nome'];
                 $productDescription = $row['descrizione'];
                 $productImg = $row['img'];
+                $productColor = $row['colore'];
+                $productPlace = $row['fk_centro'];
+                $productType = $row['fk_categoria'];
+
+                $sql = "SELECT nome FROM centri WHERE id_centro = $productPlace";
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        $centerName = $row['nome'];
+                    }
+                }
+
+                $sql = "SELECT categoria FROM categorie WHERE id_categoria = $productType";
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        $categoryName = $row['categoria'];
+                    }
+                }
             }
 
             echo "<div class='row'>
                     <div class='col-desc'>
-                        <h1>$productName</h1>
-                        <p>$productDescription</p>
+                        <div class='top'>
+                            <p class='novità'>Novità</p>
+                            <h1>$productName</h1>
+                            <p class='categoria'>".ucfirst($categoryName)."</p>
+                            <div class='color'>
+                                <h3>Color :</h3>
+                                <span style='--bg-color: #$productColor;'></span>
+                            </div>
+                            <p>".ucfirst($productDescription)."</p>
+                        </div>
+                        <div class='bottom'>
+                            <div class='row-where'>
+                                <div class='icon-position'><i class='bi bi-bag-heart pin-point'></i></div>
+                                <div class='col-where'>
+                                    <div><p>Prenota ora. Ritiro, in negozio:</p></div>
+                                    <div><p>Oggi presso <a href='./php/map.php'>".ucfirst($centerName)."</a></p></div>
+                                </div>
+                            </div>
+                            <div class='prenota'>
+                                <button type='button' class='button-21' role='button' data-bs-toggle='popover' data-bs-placement='top' title='Seleziona una data'>
+                                    Prenota
+                                </button>
+                                <div id='popover-content' style='display: none;'>
+                                    <input type='date' id='dateSelector'>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class='col-img'>
-                        <img src='../img/products/$productImg' />
+                        <img src='../img/articoli/$productImg' />
                     </div>
                 </div>";
         } else {

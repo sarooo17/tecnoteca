@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Feb 24, 2024 alle 12:54
+-- Creato il: Mar 02, 2024 alle 13:04
 -- Versione del server: 10.4.8-MariaDB
 -- Versione PHP: 7.3.10
 
@@ -36,20 +36,21 @@ CREATE TABLE `articoli` (
   `fk_centro` int(11) NOT NULL,
   `nome` varchar(30) NOT NULL,
   `colore` varchar(20) NOT NULL,
-  `img` varchar(100) NOT NULL
+  `img` varchar(100) NOT NULL,
+  `descrizione` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dump dei dati per la tabella `articoli`
 --
 
-INSERT INTO `articoli` (`id_articolo`, `numero_inventario`, `stato`, `fk_categoria`, `fk_centro`, `nome`, `colore`, `img`) VALUES
-(1, '123456', 'disponibile', 1, 1, 'hp', '919191', 'hp.png'),
-(2, '111111', 'in prestito', 1, 1, 'macbook', '919191', 'hp.png'),
-(4, '111112', 'disponibile', 1, 1, 'dell', 'DAA520', 'hp.png'),
-(5, '111113', 'disponibile', 1, 1, 'acer', 'DAA520', 'hp.png'),
-(6, '111114', 'disponibile', 1, 1, 'msi', 'DAA520', 'hp.png'),
-(7, '111112', 'disponibile', 1, 1, 'microsoft', 'DAA520', 'hp.png');
+INSERT INTO `articoli` (`id_articolo`, `numero_inventario`, `stato`, `fk_categoria`, `fk_centro`, `nome`, `colore`, `img`, `descrizione`) VALUES
+(1, '123456', 'disponibile', 1, 1, 'hp', '919191', 'hp.png', 'descrizione di prova'),
+(2, '111111', 'in prestito', 1, 1, 'macbook', '919191', 'hp.png', ''),
+(4, '111112', 'disponibile', 1, 1, 'dell', 'DAA520', 'hp.png', ''),
+(5, '111113', 'disponibile', 1, 1, 'acer', 'DAA520', 'hp.png', ''),
+(6, '111114', 'disponibile', 1, 1, 'msi', 'DAA520', 'hp.png', ''),
+(7, '111112', 'disponibile', 1, 1, 'microsoft', 'DAA520', 'hp.png', '');
 
 -- --------------------------------------------------------
 

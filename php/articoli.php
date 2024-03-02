@@ -145,10 +145,6 @@
                                         </div>
                                         <div class="contentBx">
                                             <h2>'.ucfirst($nome).'</h2>
-                                            <div class="color">
-                                                <h3>Color :</h3>
-                                                <span style="--bg-color: #'.$colore.';"></span>
-                                            </div>
                                             <a href="./product.php?productid='.$id.'">More info</a>
                                         </div>
                                     </div>
