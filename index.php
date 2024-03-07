@@ -49,7 +49,7 @@
                     <div class="icon-position"><i class="bi-2x bi-geo-alt pin-point"></i></div>
                     <div class="col-where">
                         <div><p>Vieni al Saro Store</p></div>
-                        <div><a href="./php/map.php">Trova il Saro Store più vicino ></a></div>
+                        <div><a href="./php/map.php">Trova il Saro Store più vicino <i class="bi bi-chevron-right"></i></a></div>
                     </div>
                 </div>
             </div>

@@ -1,13 +1,11 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Saro Search</title>
+    <title>Account</title>
     <link id="favicon" rel="icon" href="../img/logo/favicon.svg" />
 
     <link rel="stylesheet" type="text/css" href="../css/general.css">
-    <link rel="stylesheet" type="text/css" href="../css/search.css">
-    <link rel="stylesheet" type="text/css" href="../css/card.css">
-    <link rel="stylesheet" type="text/css" href="../css/filter.css">
+    <link rel="stylesheet" type="text/css" href="../css/user.css">
 </head>
 
 <body>
@@ -29,15 +27,225 @@
                         </div>
                     </div>
                 </form>
-                <a href="./prestiti.php"><i class="bi bi-folder"></i></a>
-                <a href="./user.php"><i class="bi bi-person"></i></a>
+                <?php
+                session_start();
+
+                if(isset($_SESSION['user_id'])) {
+                    echo '<a href="./prestiti.php"><i class="bi bi-folder"></i></a>
+                          <a href="./user.php"><i class="bi bi-person"></i></a>';
+                } else {
+                    echo '<button class="button-21" role="button" onclick="window.location.href=\'./login.php\'">Accedi</button>';
+                }
+                ?>
             </div>
         </div>
     </nav>
-    <section>
-        <!-- ispirarsi a coinbase -->
-    </section>
+    <?php
+        if(isset($_SESSION['user_id'])) {
+
+            require_once './db.php';
+
+            $user_id = $_SESSION['user_id'];
+
+            $sql = "SELECT * FROM utenti WHERE id_utente = $user_id";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                $user = $result->fetch_assoc();
+
+                $img = !empty($user['img']) ? '../img/users/'.$user['img'] : '../img/default/user.jpeg';
+                $nome = $user['nome'];
+                $cognome = $user['cognome'];
+                $email = $user['email'];
+                $indirizzo = $user['indirizzo'];
+
+                echo '<section id="account">
+                        <div class="user-profile">
+                            <div class="user-profile-infos">
+                                <div class="profile-img">
+                                    <img src="'.$img.'" />
+                                    <a href="javascript:void(0);" onclick="openPopup()">
+                                        <div class="overlay">
+                                            <i class="bi bi-pencil"></i>
+                                        </div>
+                                    </a>
+                                    <div id="popup-overlay" style="display: none;"></div>
+                                    <div id="popup" style="display: none;">
+                                        <div class="popup-content">
+                                            <h3>Modifica foto profilo</h3>
+                                            <span class="close" onclick="closePopup(event)">&times;</span>
+                                            <form action="./edit_user_img.php" method="post" enctype="multipart/form-data">
+                                                <div class="upload">
+                                                    <label id="file-name"></label>
+                                                </div>
+                                                <label for="file-upload" class="custom-file-upload">Seleziona un file</label>
+                                                <input id="file-upload" type="file" name="img"/>
+                                                <button class="button-outline" role="button" type="submit">Carica</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="profile-info">
+                                    <h1>'.ucfirst($nome).' '.ucfirst($cognome).'</h1>
+                                    <p><strong>'.$email.'</strong></p>
+                                </div>
+                            </div>
+                            <div class="profile-edit">
+                                <button class="button-outline" role="button" onclick="openPopup()">Modifica foto profilo</button>
+                            </div>
+                        </div>
+                        <div class="account-box">
+                            <div class="account-box-title">
+                                <h1>Info utente</h1>
+                            </div>
+                            <div class="line"></div>
+                            <div class="account-box-line">
+                                <div class="account-box-line-data">
+                                    <p><strong>Nome utente</strong></p>
+                                    <p id="pnome" style="display: block;">'.ucfirst($nome).' '.ucfirst($cognome).'</p>
+                                </div>
+                                <div class="account-box-line-arrow">
+                                    <a href="javascript:void(0);" onclick="openFormNome()"><i class="bi bi-chevron-right"></i></a>
+                                </div>
+                            </div>
+                            <form id="formnome" class="edit-form" action="./edit_user_name.php" style="display: none;" method="post">
+                                <div class="inputs-form">
+                                    <div class="input-form">
+                                        <label for="nome"><strong>Nome</strong></label>
+                                        <input type="text" id="nome" name="nome" placeholder="'.ucfirst($nome).'">
+                                    </div>
+                                    <div class="input-form">
+                                        <label for="nome"><strong>Cognome</strong></label>
+                                        <input type="text" id="cognome" name="cognome" placeholder="'.ucfirst($cognome).'">
+                                    </div>
+                                </div>
+                                <div class="button-form">
+                                    <div class="buttons">
+                                        <button type="button" class="button-outline annulla" onclick="AnnullaFormNome()">Annulla</button>
+                                        <button type="submit" class="button-outline conferma">Conferma</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="line"></div>
+                            <div class="account-box-line">
+                                <div class="account-box-line-data">
+                                    <p><strong>Email</strong></p>
+                                    <p id="pemail" style="display: block;">'.$email.'</p>
+                                </div>
+                                <div class="account-box-line-arrow">
+                                    <a href="javascript:void(0);" onclick="openFormEmail()"><i class="bi bi-chevron-right"></i></a>
+                                </div>
+                            </div>
+                            <form id="formemail" class="edit-form" action="./edit_user_email.php" style="display: none;" method="post">
+                                <div class="inputs-form">
+                                    <div class="input-form">
+                                        <label for="email"><strong>Email</strong></label>
+                                        <input type="text" id="email" name="email" placeholder="'.$email.'">
+                                    </div>
+                                </div>
+                                <div class="button-form">
+                                    <div class="buttons">
+                                        <button type="button" class="button-outline annulla" onclick="AnnullaFormEmail()">Annulla</button>
+                                        <button type="submit" class="button-outline conferma">Conferma</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="line"></div>
+                            <div class="account-box-line">
+                                <div class="account-box-line-data">
+                                    <p><strong>Password</strong></p>
+                                    <p id="passdot">
+                                        <i class="bi bi-dot"></i>
+                                        <i class="bi bi-dot"></i>
+                                        <i class="bi bi-dot"></i>
+                                        <i class="bi bi-dot"></i>
+                                        <i class="bi bi-dot"></i>
+                                        <i class="bi bi-dot"></i>
+                                        <i class="bi bi-dot"></i>
+                                        <i class="bi bi-dot"></i>
+                                    </p>
+                                </div>
+                                <div class="account-box-line-arrow">
+                                    <a href="./edit_user_password.php"><i class="bi bi-chevron-right"></i></a>
+                                </div>
+                            </div>
+                            <div class="line"></div>
+                            <div class="account-box-line">
+                                <div class="account-box-line-data">
+                                    <p><strong>Indirizzo</strong></p>
+                                    <p>'.$indirizzo.'</p>
+                                </div>
+                                <div class="account-box-line-arrow">
+                                    <a href="./edit_user_indirizzo.php"><i class="bi bi-chevron-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>';
+            } else {
+                echo "Nessun utente trovato con l'ID: $user_id";
+            }
+        } else {
+            echo '<section id="account">
+                    <div class="account-box">
+                        <div class="account-box-title">
+                            <h1>Accedi</h1>
+                        </div>
+                        <div class="account-box-button">
+                            <button class="button-21" role="button" onclick="window.location.href=\'./login.php\'">Accedi</button>
+                            <button class="button-21" role="button" onclick="window.location.href=\'./signin.php\'">Registrati</button>
+                        </div>
+                    </div>
+                </section>';
+        }
+    ?>
 </body>
+<script>
+    function openPopup() {
+        document.getElementById('popup-overlay').style.display = 'block';
+        document.getElementById('popup').style.display = 'block'
+    }
+
+    function openFormNome() {
+        document.getElementById('formnome').style.display = 'block';
+        document.getElementById('pemail').style.display = 'block';
+        document.getElementById('formemail').style.display = 'none';
+        document.getElementById('pnome').style.display = 'none';
+    }
+
+    function AnnullaFormNome() {
+        document.getElementById('formnome').style.display = 'none';
+        document.getElementById('pnome').style.display = 'block';
+
+        document.getElementById('nome').value = "";
+        document.getElementById('cognome').value = "";
+    }
+
+    function openFormEmail() {
+        document.getElementById('formemail').style.display = 'block';
+        document.getElementById('pnome').style.display = 'block';
+        document.getElementById('formnome').style.display = 'none';
+        document.getElementById('pemail').style.display = 'none';
+    }
+
+    function AnnullaFormEmail() {
+        document.getElementById('formemail').style.display = 'none';
+        document.getElementById('pemail').style.display = 'block';
+
+        document.getElementById('email').value = "";
+    }
+
+    function closePopup(event) {
+        if (event.target.className == 'close') {
+            document.getElementById('popup-overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        }
+    }
+
+    document.getElementById('file-upload').addEventListener('change', function(e) {
+        var fileName = e.target.files[0].name;
+        document.getElementById('file-name').textContent = fileName;
+    });
+</script>
 <script src="../js/general.js">
     searchForm.addEventListener('submit', function (e) {
         e.preventDefault();

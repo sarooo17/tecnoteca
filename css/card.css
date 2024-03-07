@@ -2,12 +2,13 @@
 	position: relative;
 	width: 320px;
 	height: 450px;
-	background: #232323;
+	background: #f0f0f0;
 	border-radius: 20px;
 	overflow: hidden;
+	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.06);
 }
 
-@media screen and (max-height: 650px) {
+@media screen and (max-height: 710px) {
 	.card {
 		height: 300px;
 	}
@@ -37,7 +38,7 @@
 	font-size: 10em;
 	font-weight: 800;
 	font-style: italic;
-	color: rgba(0, 0, 0, 0.288);
+	color: rgba(218, 218, 218, 0.288);
 }
 
 .card .imgBx {
@@ -81,7 +82,7 @@
 	position: relative;
 	font-weight: 600;
 	letter-spacing: 1px;
-	color: #fff;
+	color: #0f0f0f;
 	margin: 0;
 }
 

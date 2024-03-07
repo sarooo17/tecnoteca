@@ -29,8 +29,16 @@
                         </div>
                     </div>
                 </form>
-                <a href="./prestiti.php"><i class="bi bi-folder"></i></a>
-                <a href="./user.php"><i class="bi bi-person"></i></a>
+                <?php
+                session_start();
+
+                if(isset($_SESSION['user_id'])) {
+                    echo '<a href="./prestiti.php"><i class="bi bi-folder"></i></a>
+                          <a href="./user.php"><i class="bi bi-person"></i></a>';
+                } else {
+                    echo '<button class="button-21" role="button" onclick="window.location.href=\'./login.php\'">Accedi</button>';
+                }
+                ?>
             </div>
         </div>
     </nav>
@@ -60,16 +68,7 @@
                 <div class="filter-categories">
                     <ul>
                         <?php
-                            $servername = "localhost";
-                            $username = "root";
-                            $password = "";
-                            $dbname = "saro_tecnoteca";
-
-                            $conn = new mysqli($servername, $username, $password, $dbname);
-
-                            if($conn->connect_error) {
-                                die("Connessione al database fallita: ".$conn->connect_error);
-                            }
+                            require_once './db.php';
 
                             $sql = "SELECT categoria FROM categorie";
                             $result = $conn->query($sql);
@@ -111,16 +110,7 @@
                                 <select id="filterCenter" name="filterCenter">
                                     <option value="">All</option>
                                     <?php
-                                        $servername = "localhost";
-                                        $username = "root";
-                                        $password = "";
-                                        $dbname = "saro_tecnoteca";
-
-                                        $conn = new mysqli($servername, $username, $password, $dbname);
-
-                                        if($conn->connect_error) {
-                                            die("Connessione al database fallita: ".$conn->connect_error);
-                                        }
+                                        require_once './db.php';
 
                                         $sql = "SELECT * FROM centri";
                                         $result = $conn->query($sql);
@@ -153,16 +143,7 @@
         <div class="main-full">
             <ol class="shots-grid">
                 <?php
-                    $servername = "localhost";
-                    $username = "root";
-                    $password = "";
-                    $dbname = "saro_tecnoteca";
-
-                    $conn = new mysqli($servername, $username, $password, $dbname);
-
-                    if($conn->connect_error) {
-                        die("Connessione al database fallita: ".$conn->connect_error);
-                    }
+                    require_once './db.php';
 
                     if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['search'])) {
                         $search_term = $_GET['search'];

@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Saro Search</title>
+    <title>Saro</title>
     <link id="favicon" rel="icon" href="../img/logo/favicon.svg" />
 
     <link rel="stylesheet" type="text/css" href="../css/general.css">
@@ -28,25 +28,22 @@
                         </div>
                     </div>
                 </form>
-                <a href="./prestiti.php"><i class="bi bi-folder"></i></a>
-                <a href="./user.php"><i class="bi bi-person"></i></a>
+                <?php
+                session_start();
+
+                if(isset($_SESSION['user_id'])) {
+                    echo '<a href="./prestiti.php"><i class="bi bi-folder"></i></a>
+                          <a href="./user.php"><i class="bi bi-person"></i></a>';
+                } else {
+                    echo '<button class="button-21" role="button" onclick="window.location.href=\'./login.php\'">Accedi</button>';
+                }
+                ?>
             </div>
         </div>
     </nav>
     <section id="product">
         <?php
-        $productId = $_GET['productid'];
-
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "saro_tecnoteca";
-
-        $conn = new mysqli($servername, $username, $password, $dbname);
-
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
+        require_once './db.php';
 
         $sql = "SELECT * FROM articoli WHERE id_articolo= $productId";
         $result = $conn->query($sql);
@@ -83,7 +80,7 @@
                     <div class='col-desc'>
                         <div class='top'>
                             <p class='novità'>Novità</p>
-                            <h1>$productName</h1>
+                            <h1>".ucfirst($productName)."</h1>
                             <p class='categoria'>".ucfirst($categoryName)."</p>
                             <div class='color'>
                                 <h3>Color :</h3>
