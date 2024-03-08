@@ -1,33 +1,28 @@
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>Accedi</title>
-        <link id="favicon" rel="icon" href="../img/logo/favicon.svg" />
+<?php
+require_once './db.php';
 
-        <link rel="stylesheet" type="text/css" href="../css/general.css">
-        <link rel="stylesheet" type="text/css" href="../css/login.css">
-    </head>
-    <body>
-        <section id="login">
-            <div class="login-box">
-                <div class="login-sx">
-                    <div class="top">
-                        <h1>Accedi</h1>
-                        <p>Nuovo utente? <a href="./signin.php">Crea un account</a></p>
-                        <form action="login_check.php" method="post">
-                            <input type="email" placeholder="Email" name="email">
-                            <input type="password" placeholder="Password" name="password">
-                            <button class="button-21" role="button" type="submit">Accedi</button>
-                        </form>
-                    </div>
-                    <div class="bottom"></div>
-                </div>
-                <div class="login-dx">
-                    <div class="login-img">
+$email = $_POST['email'];
+$password = $_POST['password'];
 
-                    </div>
-                </div>
-            </div>
-        </section>
-    </body>
-</html>
+$stmt = $conn->prepare("SELECT * FROM utenti WHERE email = ? AND passmd5 = ?");
+$stmt->bind_param('ss', $email, md5($password));
+
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    echo "User exists!";
+    session_start();
+    $row = $result->fetch_assoc();
+    $_SESSION['user_id'] = $row['id_utente'];
+    $_SESSION['user_type'] = $row['tipologia_utente'];
+    if ($row['tipologia_utente'] === 'cliente') {
+        header('Location: ../index.php');
+    } else {
+        header('Location: ./backend.php');
+    }
+} else {
+    echo "User does not exist!";
+}
+?>

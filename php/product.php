@@ -35,7 +35,7 @@
                     echo '<a href="./prestiti.php"><i class="bi bi-folder"></i></a>
                           <a href="./user.php"><i class="bi bi-person"></i></a>';
                 } else {
-                    echo '<button class="button-21" role="button" onclick="window.location.href=\'./login.php\'">Accedi</button>';
+                    echo '<button class="button-21" role="button" onclick="window.location.href=\'../html/login.html\'">Accedi</button>';
                 }
                 ?>
             </div>
@@ -44,6 +44,8 @@
     <section id="product">
         <?php
         require_once './db.php';
+
+        $productId = $_GET['productid'];
 
         $sql = "SELECT * FROM articoli WHERE id_articolo= $productId";
         $result = $conn->query($sql);

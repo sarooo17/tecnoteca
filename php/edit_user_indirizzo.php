@@ -9,11 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $userID = $_SESSION['user_id'];
 
-$newEmail = $_POST['email'];
+$newIndirizzo = $_POST['indirizzo'];
 
-$query = "UPDATE utenti SET email = ? WHERE id_utente = ?";
+$query = "UPDATE utenti SET indirizzo = ? WHERE id_utente = ?";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("si", $newEmail, $userID);
+$stmt->bind_param("si", $newIndirizzo, $userID);
 $result = $stmt->execute();
 
 if ($result) {

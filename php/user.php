@@ -34,7 +34,7 @@
                     echo '<a href="./prestiti.php"><i class="bi bi-folder"></i></a>
                           <a href="./user.php"><i class="bi bi-person"></i></a>';
                 } else {
-                    echo '<button class="button-21" role="button" onclick="window.location.href=\'./login.php\'">Accedi</button>';
+                    echo '<button class="button-21" role="button" onclick="window.location.href=\'../html/login.html\'">Accedi</button>';
                 }
                 ?>
             </div>
@@ -139,8 +139,8 @@
                             <form id="formemail" class="edit-form" action="./edit_user_email.php" style="display: none;" method="post">
                                 <div class="inputs-form">
                                     <div class="input-form">
-                                        <label for="email"><strong>Email</strong></label>
-                                        <input type="text" id="email" name="email" placeholder="'.$email.'">
+                                        <label for="email"><strong>Nuova email</strong></label>
+                                        <input type="email" id="email" name="email" placeholder="'.$email.'">
                                     </div>
                                 </div>
                                 <div class="button-form">
@@ -154,7 +154,7 @@
                             <div class="account-box-line">
                                 <div class="account-box-line-data">
                                     <p><strong>Password</strong></p>
-                                    <p id="passdot">
+                                    <p id="ppassword" style="display: block;">
                                         <i class="bi bi-dot"></i>
                                         <i class="bi bi-dot"></i>
                                         <i class="bi bi-dot"></i>
@@ -166,20 +166,66 @@
                                     </p>
                                 </div>
                                 <div class="account-box-line-arrow">
-                                    <a href="./edit_user_password.php"><i class="bi bi-chevron-right"></i></a>
+                                    <a href="javascript:void(0);" onclick="openFormPassword()"><i class="bi bi-chevron-right"></i></a>
                                 </div>
                             </div>
+                            <form id="formpassword" class="edit-form" action="./edit_user_password.php" style="display: none;" method="post">
+                                <div class="inputs-form">
+                                    <div class="input-form">
+                                        <label for="old-password"><strong>Vecchia password</strong></label>
+                                        <input type="password" id="old-password" name="old-password">
+                                    </div>
+                                    <div class="input-form">
+                                        <label for="new-password"><strong>Nuova password</strong></label>
+                                        <input type="password" id="new-password" name="new-password">
+                                    </div>
+                                    <div class="input-form">
+                                        <label for="conf-password"><strong>Conferma password</strong></label>
+                                        <input type="password" id="conf-password" name="conf-password">
+                                    </div>
+                                </div>
+                                <div class="button-form">
+                                    <div class="buttons">
+                                        <button type="button" class="button-outline annulla" onclick="AnnullaFormPassword()">Annulla</button>
+                                        <button type="submit" class="button-outline conferma">Conferma</button>
+                                    </div>
+                                </div>
+                            </form>
                             <div class="line"></div>
                             <div class="account-box-line">
                                 <div class="account-box-line-data">
                                     <p><strong>Indirizzo</strong></p>
-                                    <p>'.$indirizzo.'</p>
+                                    <p id="pindirizzo" style="display: block;">'.$indirizzo.'</p>
                                 </div>
                                 <div class="account-box-line-arrow">
-                                    <a href="./edit_user_indirizzo.php"><i class="bi bi-chevron-right"></i></a>
+                                    <a href="javascript:void(0);" onclick="openFormIndirizzo()"><i class="bi bi-chevron-right"></i></a>
+                                </div>
+                            </div>
+                            <form id="formindirizzo" class="edit-form" action="./edit_user_indirizzo.php" style="display: none;" method="post">
+                                <div class="inputs-form">
+                                    <div class="input-form">
+                                        <label for="indirizzo"><strong>Nuovo indirizzo</strong></label>
+                                        <input type="text" id="indirizzo" name="indirizzo" placeholder="'.$indirizzo.'">
+                                    </div>
+                                </div>
+                                <div class="button-form">
+                                    <div class="buttons">
+                                        <button type="button" class="button-outline annulla" onclick="AnnullaFormIndirizzo()">Annulla</button>
+                                        <button type="submit" class="button-outline conferma">Conferma</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="line"></div>
+                            <div class="account-box-line">
+                                <div class="account-box-line-data">
+                                    <p><strong>Prenotazioni e Prestiti</strong></p>
+                                </div>
+                                <div class="account-box-line-arrow">
+                                    <a href="./prestitiprenotazioni.php"><i class="bi bi-chevron-right"></i></a>
                                 </div>
                             </div>
                         </div>
+                        <a href="./logout.php" class="exit" role="button"><strong>Esci</strong></a>
                     </section>';
             } else {
                 echo "Nessun utente trovato con l'ID: $user_id";
@@ -207,8 +253,12 @@
 
     function openFormNome() {
         document.getElementById('formnome').style.display = 'block';
+        document.getElementById('pindirizzo').style.display = 'block';
         document.getElementById('pemail').style.display = 'block';
+        document.getElementById('ppassword').style.display = 'block';
+        document.getElementById('formindirizzo').style.display = 'none';
         document.getElementById('formemail').style.display = 'none';
+        document.getElementById('formpassword').style.display = 'none';
         document.getElementById('pnome').style.display = 'none';
     }
 
@@ -223,7 +273,11 @@
     function openFormEmail() {
         document.getElementById('formemail').style.display = 'block';
         document.getElementById('pnome').style.display = 'block';
+        document.getElementById('pindirizzo').style.display = 'block';
+        document.getElementById('ppassword').style.display = 'block';
         document.getElementById('formnome').style.display = 'none';
+        document.getElementById('formindirizzo').style.display = 'none';
+        document.getElementById('formpassword').style.display = 'none';
         document.getElementById('pemail').style.display = 'none';
     }
 
@@ -232,6 +286,42 @@
         document.getElementById('pemail').style.display = 'block';
 
         document.getElementById('email').value = "";
+    }
+
+    function openFormPassword() {
+        document.getElementById('formpassword').style.display = 'block';
+        document.getElementById('pnome').style.display = 'block';
+        document.getElementById('pemail').style.display = 'block';
+        document.getElementById('pindirizzo').style.display = 'block';
+        document.getElementById('formnome').style.display = 'none';
+        document.getElementById('formemail').style.display = 'none';
+        document.getElementById('formindirizzo').style.display = 'none';
+        document.getElementById('ppassword').style.display = 'none';
+    }
+
+    function AnnullaFormPassword() {
+        document.getElementById('formpassword').style.display = 'none';
+        document.getElementById('ppassword').style.display = 'block';
+
+        document.getElementById('password').value = "";
+    }
+
+    function openFormIndirizzo() {
+        document.getElementById('formindirizzo').style.display = 'block';
+        document.getElementById('pnome').style.display = 'block';
+        document.getElementById('pemail').style.display = 'block';
+        document.getElementById('ppassword').style.display = 'block';
+        document.getElementById('formnome').style.display = 'none';
+        document.getElementById('formemail').style.display = 'none';
+        document.getElementById('formpassword').style.display = 'none';
+        document.getElementById('pindirizzo').style.display = 'none';
+    }
+
+    function AnnullaFormIndirizzo() {
+        document.getElementById('formindirizzo').style.display = 'none';
+        document.getElementById('pindirizzo').style.display = 'block';
+
+        document.getElementById('indirizzo').value = "";
     }
 
     function closePopup(event) {

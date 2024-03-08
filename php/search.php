@@ -36,7 +36,7 @@
                     echo '<a href="./prestiti.php"><i class="bi bi-folder"></i></a>
                           <a href="./user.php"><i class="bi bi-person"></i></a>';
                 } else {
-                    echo '<button class="button-21" role="button" onclick="window.location.href=\'./login.php\'">Accedi</button>';
+                    echo '<button class="button-21" role="button" onclick="window.location.href=\'../html/login.html\'">Accedi</button>';
                 }
                 ?>
             </div>
@@ -78,7 +78,7 @@
                                     $category = $row['categoria'];
                                     $isActive = (isset($_GET['search']) && $_GET['search'] == strtolower($category)) ? 'active' : '';
                                     echo "<li class='category $isActive'>
-                                        <a title='$category' href='http://localhost/saro/saro-tecnoteca/php/search.php?search=" . strtolower($category) . "'>".ucfirst($category)."</a>
+                                        <a title='".$category."' href='http://localhost/saro/saro-tecnoteca/php/search.php?search=" . strtolower($category) . "'>".ucfirst($category)."</a>
                                     </li>";
                                 }
                             } else {
@@ -117,7 +117,7 @@
 
                                         if ($result->num_rows > 0) {
                                             while($row = $result->fetch_assoc()) {
-                                                $center = $row['nome_centro'];
+                                                $center = $row['nome'];
                                                 echo "<option value='$center'>$center</option>";
                                             }
                                         } else {
@@ -137,9 +137,8 @@
                 </div>
             </div>
         </div>
-        
     </section>
-    <section>
+    <section id="products">
         <div class="main-full">
             <ol class="shots-grid">
                 <?php
@@ -194,7 +193,6 @@
             </ol>
         </div>
     </section>
-    
 </body>
 <script src="../js/general.js">
     searchForm.addEventListener('submit', function (e) {

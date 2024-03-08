@@ -33,7 +33,7 @@
                     echo '<a href="./php/prestiti.php"><i class="bi bi-folder"></i></a>
                           <a href="./php/user.php"><i class="bi bi-person"></i></a>';
                 } else {
-                    echo '<button class="button-21" role="button" onclick="window.location.href=\'./php/login.php\'">Accedi</button>';
+                    echo '<button class="button-21" role="button" onclick="window.location.href=\'./html/login.html\'">Accedi</button>';
                 }
                 ?>
             </div>
