@@ -6,7 +6,7 @@
     <body>
         <nav>
             <ul>
-                <li>
+                <li class="logo">
                     <a href="./backend.php">
                         <img src="../img/logo/favicon.svg">
                     </a>
