@@ -39,15 +39,23 @@
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	width: 120px;
-	height: 100%;
-	margin: 20px 0;
+	width: 10%;
+	margin: 10px 0;
 }
 
 .btns a {
-	width: 40px;
+	width: 36px;
+	height: 36px;
 	text-decoration: none;
 	color: #111111;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 500px;
+}
+
+.btns a:hover {
+	background-color: #e9e9e9;
 }
 
 .articolo {
@@ -55,13 +63,13 @@
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	width: 100%;
+	width: 90%;
 	margin: 15px 0;
 }
 
 .blank {
 	width: 120px;
-	height: 100%;
+	height: 0;
 }
 
 .disponibile {
@@ -76,15 +84,11 @@
 	color: #f06000;
 }
 
-.line:last-of-type {
-	display: none;
-}
-
 .trash {
 	color: #d10000;
 }
 
-#popup {
+.popup {
 	position: fixed;
 	z-index: 1000;
 	left: 25%;
@@ -170,4 +174,53 @@
 	height: 100%;
 	z-index: 999;
 	background: rgba(0, 0, 0, 0.5);
+}
+
+.open-popup-info , .open-popup-mod, .open-popup-delet {
+	cursor: pointer;
+	width: 100%;
+}
+
+.row-art-back {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 90%;
+	height: auto;
+	padding: 20px;
+}
+
+.col-art-back {
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: start;
+	width:92vw;
+	height: auto;
+	margin-left: 4.52rem;
+}
+
+.scrollable-section {
+	overflow-y: auto;
+	height: 70vh;
+	width: 100%;
+}
+
+.scrollable-section::-webkit-scrollbar {
+	width: 10px;
+}
+
+.scrollable-section::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+.scrollable-section::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 5px;
+}
+
+.scrollable-section::-webkit-scrollbar-thumb:hover {
+	background: #555;
 }

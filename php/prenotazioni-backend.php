@@ -1,5 +1,7 @@
 <html>
     <head>
+        <title>Saro Prenotazioni</title>
+        <link id="favicon" rel="icon" href="./img/logo/favicon.svg" />
         <link rel="stylesheet" type="text/css" href="../css/backend.css">
         <link rel="stylesheet" type="text/css" href="../css/general.css">
     </head>
