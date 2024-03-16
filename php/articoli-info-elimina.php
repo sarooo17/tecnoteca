@@ -3,7 +3,7 @@ include 'db.php';
 
 $id = $_POST['id'];
 
-$stmt = $conn->prepare('SELECT id_articolo, numero_inventario, stato, fk_categoria, fk_centro, nome, colore, img, descrizione FROM articoli WHERE numero_inventario = ?');
+$stmt = $conn->prepare('SELECT id_articolo, numero_inventario, stato, fk_categoria, fk_centro, nome, colore, img, descrizione FROM articoli_eliminati WHERE numero_inventario = ?');
 $stmt->bind_param('i', $id);
 
 $stmt->execute();

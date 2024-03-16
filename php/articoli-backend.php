@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>Saro Articoli</title>
-        <link id="favicon" rel="icon" href="./img/logo/favicon.svg" />
+        <link id="favicon" rel="icon" href="../img/logo/favicon.svg" />
 
         <link rel="stylesheet" type="text/css" href="../css/backend.css">
         <link rel="stylesheet" type="text/css" href="../css/general.css">
@@ -73,15 +73,43 @@
                             <p><u><strong>Nome</strong></u></p>
                             <p><u><strong>Centro</strong></u></p>
                             <p><u><strong>Stato</strong></u></p>
-                            <div class="btns blank"><span class="blank"></span></div><!--add item button-->
+                            <div class="btns">
+                                <a href="#" class="open-popup-new">
+                                    <i class="bi bi-plus"></i>
+                                </a>
+                                <a href="?filter=old" class="open-popup-old">
+                                    <i class="bi-x-circle"></i>
+                                </a>
+                                <a href="?filter=" class="open-popup-art">
+                                    <i class="bi-box-seam"></i>
+                                </a>
+                                <div id="popup-new" class="popup" style="display: none;">
+                                    <div class="popup-content">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="line"></div>
                         <div class="scrollable-section">
                             <?php
                             require_once('./db.php');
 
-                            $sql = "SELECT * FROM articoli";
+                            $table = "articoli";
+
+                            if (isset($_GET['filter'])) {
+                                $filter = $_GET['filter'];
+
+                                if ($filter === 'old') {
+                                    $table = "articoli_eliminati";
+                                }
+                            }
+
+                            $sql = "SELECT * FROM " . $table;
                             $result = $conn->query($sql);
+
+                            if ($result === false) {
+                                die("Errore nell'esecuzione della query: " . $conn->error);
+                            }
 
                             if ($result->num_rows > 0) {
                                 while($row = $result->fetch_assoc()) {
@@ -130,8 +158,9 @@
                                                 }else if($stato == "guasto"){
                                                     echo '<p class="guasto">'.ucfirst($stato).'</p>';
                                                 }
-                                    echo '  </div>
-                                            <div class="btns">
+                                echo '</div>';
+                                    if ($table !== 'articoli_eliminati') {
+                                        echo '<div class="btns">
                                                 <div id="popup-overlay" style="display: none;"></div>
                                                 <a href="#" class="open-popup-info" data-id="'.$numero_inventario.'">
                                                     <i class="bi bi-three-dots"></i>
@@ -139,7 +168,8 @@
                                                 <div id="popup-info" class="popup" style="display: none;">
                                                     <div class="popup-content">
                                                         <h3 id="titolo-popup"></h3>
-                                                        <span class="close" onclick="closePopup(event, \'popup-info\')">&times;</span>                                                        <p id="nome-popup"></p>
+                                                        <span class="close" onclick="closePopup(event, \'popup-info\')">&times;</span>                                                        
+                                                        <p id="nome-popup"></p>
                                                         <p id="numero_inventario-popup"></p>
                                                         <p id="categoria-popup"></p>
                                                         <p id="centro-popup"></p>
@@ -155,8 +185,6 @@
                                                 </a>
                                                 <div id="popup-mod" class="popup" style="display: none;">
                                                     <div class="popup-content">
-                                                        <h3 id="titolo-popup-mod"></h3>
-                                                        <span class="close" onclick="closePopup(event, \'popup-mod\')">&times;</span>
                                                     </div>
                                                 </div>
                                                 <a href="#" class="open-popup-delete" data-id="'.$numero_inventario.'">
@@ -164,16 +192,35 @@
                                                 </a>
                                                 <div id="popup-del" class="popup" style="display: none;">
                                                     <div class="popup-content">
-                                                        <h3></h3>
-                                                        <span class="close" onclick="closePopup(event, \'popup-del\')">&times;</span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="line"></div>';
+                                        </div>';
+                                    }else{
+                                        echo '<div class="btns">
+                                                <div id="popup-overlay" style="display: none;"></div>
+                                                <a href="#" class="open-popup-rest" data-id="'.$numero_inventario.'">
+                                                    <i class="bi bi-box-arrow-up-left"></i>
+                                                </a>
+                                                <div id="popup-rest" class="popup" style="display: none;">
+                                                    <div class="popup-content">
+                                                    </div>
+                                                </div>
+                                                <a href="#" class="open-popup-delete-def" data-id="'.$numero_inventario.'">
+                                                    <i class="bi bi-trash trash"></i>
+                                                </a>
+                                                <div id="popup-del-def" class="popup" style="display: none;">
+                                                    <div class="popup-content">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>';
+                                    }
+                                    
+                                    echo'<div class="line"></div>';
                                 }
                             } else {
-                                echo "0 results";
+                                echo "<div class='no-data'><strong><p>Nessun articolo trovato</p></strong></div>";
                             }
                             $conn->close();
                             
@@ -190,8 +237,11 @@
         var linksinfo = document.querySelectorAll('.open-popup-info');
         var linksmod = document.querySelectorAll('.open-popup-mod');
         var linksdelete = document.querySelectorAll('.open-popup-delete');
+        var linksnew = document.querySelectorAll('.open-popup-new');
+        var linksrest = document.querySelectorAll('.open-popup-rest');
+        var linksdeldef = document.querySelectorAll('.open-popup-delete-def');
 
-        function addClickListener(links, url, isMod, isDel, popupId) {
+        function addClickListener(links, url, isMod, isDel, isNew, isRest, isDelDef, popupId) {
         for (var i = 0; i < links.length; i++) {
             links[i].addEventListener('click', function(event) {
                 event.preventDefault();
@@ -200,7 +250,7 @@
 
                 $.ajax({
                     url: url,
-                    type: 'GET',
+                    type: 'POST',
                     data: {
                         id: id
                     },
@@ -221,7 +271,8 @@
                         var indirizzoElement = document.getElementById('indirizzo-popup');
 
                         if (isMod) {
-                            var formHtml = '<form action="modifica-articolo.php" method="post">';
+                            var formHtml = '<span class="close" onclick="closePopup(event, \'popup-mod\')">&times;</span>';
+                            formHtml += '<form action="modifica-articolo.php" method="post">';
                             formHtml += '<h3>Modifica articolo ' + data.nome + '</h3>';
                             formHtml += '<input type="hidden" name="id" value="' + data.id + '">';
                             formHtml += '<input type="text" name="nome" value="' + data.nome + '">';
@@ -236,15 +287,49 @@
                             formHtml += '<input type="submit" value="Modifica">';
                             formHtml += '</form>';
 
-                            document.getElementById('popup-mod').querySelector('.popup-content').innerHTML += formHtml;                        
+                            document.getElementById('popup-mod').querySelector('.popup-content').innerHTML = formHtml;                        
                         } else if(isDel){
-                            var formHtml = '<form action="articoli-delete.php" method="post">';
+                            var formHtml = '<span class="close" onclick="closePopup(event, \'popup-del\')">&times;</span>';
+                            formHtml += '<form action="articoli-delete.php" method="post">';
                             formHtml += '<h3>Sei sicuro di voler eliminare l\'articolo ' + data.nome + '('+data.numero_inventario+')?</h3>';
                             formHtml += '<input type="hidden" name="id" value="' + data.id + '">';
                             formHtml += '<input type="submit" value="Elimina">';
                             formHtml += '</form>';
 
-                            document.getElementById('popup-del').querySelector('.popup-content').innerHTML += formHtml;
+                            document.getElementById('popup-del').querySelector('.popup-content').innerHTML = formHtml;
+                        } else if(isNew){
+                            var formHtml = '<span class="close" onclick="closePopup(event, \'popup-new\')">&times;</span>';
+                            formHtml += '<form action="nuovo-articolo.php" method="post">';
+                            formHtml += '<h3>Inserisci nuovo articolo</h3>';
+                            formHtml += '<input type="text" name="nome">';
+                            formHtml += '<input type="text" name="numero_inventario">';
+                            formHtml += '<input type="text" name="categoria">';
+                            formHtml += '<input type="text" name="nome_centro">';
+                            formHtml += '<input type="text" name="stato">';
+                            formHtml += '<input type="text" name="descrizione">';
+                            formHtml += '<input type="text" name="colore">';
+                            formHtml += '<input type="submit" value="Inserisci">';
+                            formHtml += '</form>';
+
+                            document.getElementById('popup-new').querySelector('.popup-content').innerHTML = formHtml;  
+                        } else if(isRest){
+                            var formHtml = '<span class="close" onclick="closePopup(event, \'popup-rest\')">&times;</span>';
+                            formHtml += '<form action="articoli-restore.php" method="post">';
+                            formHtml += '<h3>Sei sicuro di voler ripristinare l\'articolo ' + data.nome + '('+data.numero_inventario+')?</h3>';
+                            formHtml += '<input type="hidden" name="id" value="' + data.id + '">';
+                            formHtml += '<input type="submit" value="Ripreistina">';
+                            formHtml += '</form>';
+
+                            document.getElementById('popup-rest').querySelector('.popup-content').innerHTML = formHtml;
+                        } else if(isDelDef){
+                            var formHtml = '<span class="close" onclick="closePopup(event, \'popup-del-def\')">&times;</span>';
+                            formHtml += '<form action="articoli-delete-def.php" method="post">';
+                            formHtml += '<h3>Sei sicuro di voler eliminare definitivamente l\'articolo ' + data.nome + '('+data.numero_inventario+')?</h3>';
+                            formHtml += '<input type="hidden" name="id" value="' + data.id + '">';
+                            formHtml += '<input type="submit" value="Elimina">';
+                            formHtml += '</form>';
+
+                            document.getElementById('popup-del-def').querySelector('.popup-content').innerHTML = formHtml;
                         } else {
                             if (nomeElement) {
                                 nomeElement.textContent = "Info articolo " + data.nome;
@@ -288,9 +373,12 @@
         }
     }
 
-        addClickListener(linksinfo, 'articoli-info.php',false,false, 'popup-info');
-        addClickListener(linksmod, 'articoli-info.php', true,false, 'popup-mod'); 
-        addClickListener(linksdelete, 'articoli-info.php',false, true, 'popup-del'); 
+        addClickListener(linksinfo, 'articoli-info.php',false,false, false,false,false,'popup-info');
+        addClickListener(linksmod, 'articoli-info.php', true,false, false,false,false,'popup-mod'); 
+        addClickListener(linksdelete, 'articoli-info.php',false, true, false,false,false,'popup-del'); 
+        addClickListener(linksnew, 'articoli-info.php',false, false, true,false,false, 'popup-new'); 
+        addClickListener(linksrest, 'articoli-info-elimina.php',false, false, false,true,false, 'popup-rest'); 
+        addClickListener(linksdeldef, 'articoli-info-elimina.php',false, false, false,false,true, 'popup-del-def'); 
 
         function closePopup(event, popupId) {
             var popupElement = document.getElementById(popupId);

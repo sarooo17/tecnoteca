@@ -5,7 +5,7 @@ include 'db.php';
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
 
-    $createTableQuery = "CREATE TABLE IF NOT EXISTS `articoli-eliminati` (
+    $createTableQuery = "CREATE TABLE IF NOT EXISTS `articoli_eliminati` (
         id_articolo INT(11) PRIMARY KEY,
         numero_inventario VARCHAR(255),
         stato VARCHAR(255),
@@ -19,8 +19,8 @@ if (isset($_POST['id'])) {
     )";
     $conn->query($createTableQuery);
 
-    $moveArticleQuery = "INSERT INTO `articoli-eliminati` (id_articolo, numero_inventario, stato, fk_categoria, fk_centro, nome, colore, img, descrizione)
-        SELECT id_articolo, numero_inventario, stato, fk_categoria, fk_centro, nome, colore, img, descrizione FROM articoli WHERE id_articolo = $id";
+    $moveArticleQuery = "INSERT INTO `articoli_eliminati` (id_articolo, numero_inventario, stato, fk_categoria, fk_centro, nome, colore, img, descrizione)
+        SELECT id_articolo, numero_inventario, 'guasto', fk_categoria, fk_centro, nome, colore, img, descrizione FROM articoli WHERE id_articolo = $id";
     $conn->query($moveArticleQuery);
 
     $deleteArticleQuery = "DELETE FROM articoli WHERE id_articolo = $id";
