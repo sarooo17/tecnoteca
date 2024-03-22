@@ -7,6 +7,11 @@
     <link rel="stylesheet" type="text/css" href="../css/general.css">
     <link rel="stylesheet" type="text/css" href="../css/product.css">
 
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 </head>
 
 <body>
@@ -52,6 +57,7 @@
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
+                $productId = $row['id_articolo'];
                 $productName = $row['nome'];
                 $productDescription = $row['descrizione'];
                 $productImg = $row['img'];
@@ -98,14 +104,13 @@
                                     <div><p>Oggi presso <a href='./php/map.php'>".ucfirst($centerName)."</a></p></div>
                                 </div>
                             </div>
-                            <div class='prenota'>
-                                <button type='button' class='button-21' role='button' data-bs-toggle='popover' data-bs-placement='top' title='Seleziona una data'>
-                                    Prenota
-                                </button>
-                                <div id='popover-content' style='display: none;'>
-                                    <input type='date' id='dateSelector'>
+                            <form method='post' class='prenotazione-form' action='./nuova-prenotazione.php'>
+                                <input type='text' id='datepickerButton' value='' />
+                                <input type='hidden' id='productId' value='$productId'>
+                                <div class='prenota'>
+                                    <button type='submit' class='button-21' onclick='openFormNome()'>Prenota e ritira</button>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                     <div class='col-img'>
@@ -126,6 +131,56 @@
         if (searchValue !== '') {
             window.location.href = `./search.php?search=${encodeURIComponent(searchValue)}`;
         }
+    });
+</script>
+
+<script>
+    var productId = document.getElementById('productId').value;    
+    function openFormNome() {
+        document.getElementById('secprenotazione').style.display = 'block';
+
+    }
+
+    $(document).ready(function() {
+        $.ajax({
+            url: './prenotazioni-info.php',
+            type: 'POST',
+            data: { productId: productId },
+            dataType: 'json',
+            success: function(data) {
+                var prenotazioni = data.map(function(prenotazione) {
+                    var start = moment(prenotazione.start_date);
+                    var end = moment(prenotazione.end_date);
+
+                    if (!start.isValid() || !end.isValid()) {
+                        console.error('Data non valida:', prenotazione);
+                        return null;
+                    }
+
+                    return {
+                        start: start,
+                        end: end
+                    };
+                }).filter(function(prenotazione) {
+                    return prenotazione !== null;
+                });
+
+                $('#datepickerButton').daterangepicker({
+                    opens: 'right',
+                    minDate: moment().add(1, 'days'),
+                    maxDate: moment().add(6, 'months'),
+                    drops: 'up',
+                    locale: {
+                        format: 'DD/MM/YYYY'
+                    },
+                    isInvalidDate: function(date) {
+                        return prenotazioni.some(function(prenotazione) {
+                            return date.isBetween(prenotazione.start, prenotazione.end, null, '[]');
+                        });
+                    }
+                });
+            }
+        });
     });
 </script>
 </html>

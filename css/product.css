@@ -110,10 +110,24 @@ h1 {
 	margin-top: 40px;
 	width: 100%;
 	display: flex;
-	justify-content: start;
+	justify-items: start;
 	align-items: center;
 }
 
 .prenota .button-21 {
 	padding: 10px 100px;
+}
+
+.edit-form {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	flex-direction: column;
+	width: calc(100% - 50px);
+	margin: 0 25px;
+	margin-bottom: 25px;
+}
+
+.prenotazione-form{
+	margin: 0;
 }

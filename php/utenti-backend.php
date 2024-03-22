@@ -166,7 +166,6 @@
                                                         <h3 id="titolo-popup"></h3>
                                                         <span class="close" onclick="closePopup(event, \'popup-info\')">&times;</span>                                                        
                                                         <p id="nome-popup"></p>
-                                                        <p id="cognome-popup"></p>
                                                     </div>
                                                 </div>
                                                 <a href="#" class="open-popup-mod" data-id="'.$id.'">
@@ -224,10 +223,7 @@
                     dataType: 'json',
                     success: function(data) {
                         console.log(data);
-                        var titoloElement = document.getElementById('titolo-popup-info');
-                        var titoloElementmod = document.getElementById('titolo-popup-mod');
                         var nomeElement = document.getElementById('nome-popup');
-                        var ninvElement = document.getElementById('cognome-popup');
 
                         if (isMod) {
                             var formHtml = '<span class="close" onclick="closePopup(event, \'popup-mod\')">&times;</span>';
@@ -238,12 +234,7 @@
                             formHtml += '<input type="text" name="cognome" value="' + data.cognome + '">';
                             formHtml += '<input type="email" name="email" value="' + data.email + '">';
                             formHtml += '<input type="text" name="tipologia" value="' + data.tipologia + '">';
-                            
-                            formHtml += '<input type="text" name="stato" value="' + data.stato + '">';
-                            formHtml += '<input type="text" name="descrizione" value="' + data.descrizione + '">';
-                            formHtml += '<input type="text" name="colore" value="' + data.colore + '">';
-                            formHtml += '<input type="text" name="tipologia" value="' + data.tipologia + '">';
-                            formHtml += '<input type="text" name="indirizzo" value="' + data.indirizzo + '">';
+
                             formHtml += '<input type="submit" value="Modifica">';
                             formHtml += '</form>';
 
@@ -251,7 +242,7 @@
                         } else if(isDel){
                             var formHtml = '<span class="close" onclick="closePopup(event, \'popup-del\')">&times;</span>';
                             formHtml += '<form action="utenti-delete.php" method="post">';
-                            formHtml += '<h3>Sei sicuro di voler eliminare l\'articolo ' + data.nome + '('+data.numero_inventario+')?</h3>';
+                            formHtml += '<h3>Sei sicuro di voler eliminare l\'utente ' + data.nome + '?</h3>';
                             formHtml += '<input type="hidden" name="id" value="' + data.id + '">';
                             formHtml += '<input type="submit" value="Elimina">';
                             formHtml += '</form>';
@@ -262,22 +253,16 @@
                             formHtml += '<form action="nuovo-utente.php" method="post">';
                             formHtml += '<h3>Inserisci nuovo articolo</h3>';
                             formHtml += '<input type="text" name="nome">';
-                            formHtml += '<input type="text" name="numero_inventario">';
-                            formHtml += '<input type="text" name="categoria">';
-                            formHtml += '<input type="text" name="nome_centro">';
-                            formHtml += '<input type="text" name="stato">';
-                            formHtml += '<input type="text" name="descrizione">';
-                            formHtml += '<input type="text" name="colore">';
+                            formHtml += '<input type="text" name="cognome">';
+                            formHtml += '<input type="email" name="email">';
+                            formHtml += '<input type="text" name="tipologia">';
                             formHtml += '<input type="submit" value="Inserisci">';
                             formHtml += '</form>';
 
                             document.getElementById('popup-new').querySelector('.popup-content').innerHTML = formHtml;  
                         } else {
                             if (nomeElement) {
-                                nomeElement.textContent = "Info articolo " + data.nome;
-                            }
-                            if (ninvElement) {
-                                ninvElement.textContent = "Numero inventario: " + data.numero_inventario;
+                                nomeElement.textContent = "Info utente " + data.nome;
                             }
                         }
                         
