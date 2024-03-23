@@ -27,7 +27,7 @@
 }
 
 .top-tab {
-	margin: 20px 0;
+	margin: 20px 20px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;

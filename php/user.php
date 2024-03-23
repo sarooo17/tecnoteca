@@ -31,7 +31,7 @@
                 session_start();
 
                 if(isset($_SESSION['user_id'])) {
-                    echo '<a href="./prestiti.php"><i class="bi bi-folder"></i></a>
+                    echo '<a href="./prestitiprenotazioni.php"><i class="bi bi-folder"></i></a>
                           <a href="./user.php"><i class="bi bi-person"></i></a>';
                 } else {
                     echo '<button class="button-21" role="button" onclick="window.location.href=\'../html/login.html\'">Accedi</button>';

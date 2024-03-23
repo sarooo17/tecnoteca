@@ -11,7 +11,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
 </head>
 
 <body>
@@ -37,7 +36,7 @@
                 session_start();
 
                 if(isset($_SESSION['user_id'])) {
-                    echo '<a href="./prestiti.php"><i class="bi bi-folder"></i></a>
+                    echo '<a href="./prestitiprenotazioni.php"><i class="bi bi-folder"></i></a>
                           <a href="./user.php"><i class="bi bi-person"></i></a>';
                 } else {
                     echo '<button class="button-21" role="button" onclick="window.location.href=\'../html/login.html\'">Accedi</button>';
@@ -105,10 +104,10 @@
                                 </div>
                             </div>
                             <form method='post' class='prenotazione-form' action='./nuova-prenotazione.php'>
-                                <input type='text' id='datepickerButton' value='' />
-                                <input type='hidden' id='productId' value='$productId'>
+                                <input type='text' id='datepickerButton' name='datepickerButton' placeholder='Seleziona le date'/>
+                                <input type='hidden' id='productId' name='productId' value='$productId'>
                                 <div class='prenota'>
-                                    <button type='submit' class='button-21' onclick='openFormNome()'>Prenota e ritira</button>
+                                    <button type='submit' class='button-21'>Prenota e ritira</button>
                                 </div>
                             </form>
                         </div>
@@ -135,11 +134,16 @@
 </script>
 
 <script>
-    var productId = document.getElementById('productId').value;    
-    function openFormNome() {
-        document.getElementById('secprenotazione').style.display = 'block';
+    document.querySelector('.prenotazione-form').addEventListener('submit', function(event) {
+        var datepickerValue = document.querySelector('#datepickerButton').value;
 
-    }
+        if (!datepickerValue) {
+            alert('Per favore, seleziona una data di inizio e fine.');
+            event.preventDefault();
+        }
+    });
+
+    var productId = document.getElementById('productId').value;    
 
     $(document).ready(function() {
         $.ajax({
@@ -148,36 +152,35 @@
             data: { productId: productId },
             dataType: 'json',
             success: function(data) {
-                var prenotazioni = data.map(function(prenotazione) {
-                    var start = moment(prenotazione.start_date);
-                    var end = moment(prenotazione.end_date);
-
-                    if (!start.isValid() || !end.isValid()) {
-                        console.error('Data non valida:', prenotazione);
-                        return null;
-                    }
-
-                    return {
-                        start: start,
-                        end: end
-                    };
-                }).filter(function(prenotazione) {
-                    return prenotazione !== null;
-                });
-
+                console.log(data);
                 $('#datepickerButton').daterangepicker({
                     opens: 'right',
                     minDate: moment().add(1, 'days'),
                     maxDate: moment().add(6, 'months'),
                     drops: 'up',
+                    autoUpdateInput: false,
                     locale: {
-                        format: 'DD/MM/YYYY'
+                        format: 'DD/MM/YYYY',
+                        cancelLabel: 'Clear',
                     },
                     isInvalidDate: function(date) {
-                        return prenotazioni.some(function(prenotazione) {
-                            return date.isBetween(prenotazione.start, prenotazione.end, null, '[]');
-                        });
+                        for (var i = 0; i < data.length; i++) {
+                            var start = moment(data[i].data_ritiro);
+                            var end = moment(data[i].data_restituzione);
+
+                            if (date.isBetween(start, end, null, '[]')) {
+                                return true;
+                            }
+                        }
+                        return false;
                     }
+                });
+                $('#datepickerButton').on('apply.daterangepicker', function(ev, picker) {
+                    $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+                });
+
+                $('#datepickerButton').on('cancel.daterangepicker', function(ev, picker) {
+                    $(this).val('');
                 });
             }
         });
