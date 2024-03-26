@@ -53,8 +53,8 @@
                         <div class="search-input-with-dropdown">
                             <div class="left-side-wrapper">
                                 <i class="bi bi-search fill-current search-icon"></i>
-                                <form id="searchFormbig" action="./search.php" method="GET" class="search-input-form">
-                                    <input id="searchbig" type="search" placeholder="Search..." class="search-input-big">
+                                <form id="searchFormbig" action="./articoli.php" method="GET" class="search-input-form">
+                                    <input id="searchbig" name="search" type="search" placeholder="Search..." class="search-input-big">
                                     <div class="circle-icon">
                                         <i class="bi bi-x" id="closeIconbig"></i>
                                     </div>                        
@@ -69,7 +69,11 @@
                         <span class="meatball">0</span>
                         <span class="label" title="Filters">Filters</span>
                     </a>
-                    <div class="dropdown" id="filterDropdown" style="display: none;">
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="dropdown" id="filterDropdown" style="display: none;">
                         <div class="filter-dropdown-content">
                             <div class="filter-dropdown-item">
                                 <label for="filterType">Filter by Type:</label>
@@ -91,14 +95,17 @@
 
                                         if ($result->num_rows > 0) {
                                             while($row = $result->fetch_assoc()) {
-                                                $center = $row['nome_centro'];
-                                                echo "<option value='$center'>$center</option>";
+                                                $center = $row['nome'];
+                                                $selected = '';
+                                                if (isset($_GET['filterCenter']) && $_GET['filterCenter'] == $center) {
+                                                    $selected = 'selected';
+                                                }
+                                                echo "<option value='$center' $selected>$center</option>";
                                             }
                                         } else {
                                             echo "<option value=''>No centers found</option>";
                                         }
 
-                                        $conn->close();
                                     ?>
                                 </select>
                             </div>
@@ -108,26 +115,33 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
     <section id="articoli">
         <div class="main-full">
             <ol class="shots-grid">
                 <?php
-                    $servername = "localhost";
-                    $username = "root";
-                    $password = "";
-                    $dbname = "saro_tecnoteca";
+                    require_once './db.php';
 
-                    $conn = new mysqli($servername, $username, $password, $dbname);
+                    $sql = "SELECT * FROM articoli WHERE 1=1";
 
-                    if($conn->connect_error) {
-                        die("Connessione al database fallita: ".$conn->connect_error);
+                    if (isset($_GET['search']) && !empty($_GET['search'])) {
+                        $search = mysqli_real_escape_string($conn, $_GET['search']);
+                        
+                        $sql .= " AND nome LIKE '%$search%'";
                     }
 
-                    $sql = "SELECT * FROM articoli";
+                    if (isset($_GET['filterCenter']) && !empty($_GET['filterCenter'])) {
+                        $filterCenter = mysqli_real_escape_string($conn, $_GET['filterCenter']);
+
+                        $sqlcentro = "SELECT id_centro FROM centri WHERE nome = '$filterCenter'";
+                        $resultcentro = $conn->query($sqlcentro);
+
+                        if ($resultcentro->num_rows > 0) {
+                            $row = $resultcentro->fetch_assoc();
+                            $idCentro = $row['id_centro'];
+                            $sql .= " AND fk_centro = '$idCentro'";
+                        }
+                    }
+
                     $result = $conn->query($sql);
 
                     if($result->num_rows > 0) {
@@ -184,5 +198,31 @@
     closeIconbig.addEventListener('click', function () {
         searchField2.value = '';
     });
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#filter-btn").click(function(){
+        var dropdownState = $(this).attr('data-dropdown-state');
+        if (dropdownState == 'closed') {
+            // Apri il dropdown
+            $("#filterDropdown").show();
+            $(this).attr('data-dropdown-state', 'open');
+        } else {
+            // Chiudi il dropdown
+            $("#filterDropdown").hide();
+            $(this).attr('data-dropdown-state', 'closed');
+        }
+    });
+
+    $("#filterType, #filterCenter, #filterColor").change(function(){
+        var filterType = $("#filterType").val();
+        var filterCenter = $("#filterCenter").val();
+        var filterColor = $("#filterColor").val();
+
+        var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?filterType=' + filterType + '&filterCenter=' + filterCenter + '&filterColor=' + filterColor;
+        window.history.pushState({path:newUrl},'',newUrl);
+    });
+});
 </script>
 </html>

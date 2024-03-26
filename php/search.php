@@ -50,7 +50,7 @@
                     <div class="left-side-wrapper">
                         <i class="bi bi-search fill-current search-icon"></i>
                         <form id="searchFormbig" action="./search.php" method="GET" class="search-input-form">
-                            <input id="searchbig" type="search" placeholder="Search..." value="<?php echo $_GET['search']; ?>" class="search-input-big">
+                            <input id="searchbig" name="search" type="search" placeholder="Search..." value="<?php echo $_GET['search']; ?>" class="search-input-big">
                             <div class="circle-icon">
                                 <i class="bi bi-x" id="closeIconbig"></i>
                             </div>                        
@@ -78,14 +78,13 @@
                                     $category = $row['categoria'];
                                     $isActive = (isset($_GET['search']) && $_GET['search'] == strtolower($category)) ? 'active' : '';
                                     echo "<li class='category $isActive'>
-                                        <a title='".$category."' href='http://localhost/saro/saro-tecnoteca/php/search.php?search=" . strtolower($category) . "'>".ucfirst($category)."</a>
+                                        <a title='".$category."' href='?search=".$category."'>".ucfirst($category)."</a>
                                     </li>";
                                 }
                             } else {
                                 echo "Nessuna categoria trovata";
                             }
 
-                            $conn->close();
                         ?>
                     </ul>
                 </div>
@@ -124,7 +123,6 @@
                                             echo "<option value=''>No centers found</option>";
                                         }
 
-                                        $conn->close();
                                     ?>
                                 </select>
                             </div>

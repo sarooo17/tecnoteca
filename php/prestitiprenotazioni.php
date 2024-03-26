@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Account</title>
+    <title>Prestiti e Prenotazioni</title>
     <link id="favicon" rel="icon" href="../img/logo/favicon.svg" />
 
     <link rel="stylesheet" type="text/css" href="../css/user.css">
@@ -46,7 +46,7 @@
                 <div class="account-box">
                     <div class="box-title art">
                         <i class="bi bi-calendar-week icon-title"></i>
-                        <h1>Prenotazioni</h1>
+                        <h1>Le tue prenotazioni</h1>
                     </div>
                     <div class="line"></div>
                     <div class="box-data top-tab">
@@ -63,17 +63,25 @@
                             if (isset($_SESSION['user_id'])) {
                                 $idutente = $_SESSION['user_id'];
 
-                                $sql = "SELECT * FROM prenotazioni WHERE fk_utente = ?";
+                                $sql = "SELECT * FROM prenotazioni WHERE fk_utente = ? ORDER BY FIELD(stato, 'da ritirare', 'ritirato'), data_ritiro";                                
                                 $stmt = $conn->prepare($sql);
                                 $bindResult = $stmt->bind_param("i", $idutente);
                                 $executeResult = $stmt->execute();
                                 $result = $stmt->get_result();
+
+                                $printedEffettuatiHeaderpren = false;
+
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         $idprenotazione = $row['id_prenotazione'];
                                         $fk_articolo = $row['fk_articolo'];
                                         $dataritiro = $row['data_ritiro'];
                                         $datarestituzione = $row['data_restituzione'];
+                                        $dataritiro_format = DateTime::createFromFormat('Y-m-d', $row['data_ritiro']);
+                                        $dataritiro_format = $dataritiro_format -> format('d-m-Y');
+                                        $datarestituzione_format = DateTime::createFromFormat('Y-m-d', $row['data_restituzione']);
+                                        $datarestituzione_format = $datarestituzione_format -> format('d-m-Y');
+                                        $stato = $row['stato'];
                                         $sql = "SELECT * FROM articoli WHERE id_articolo = ?";
                                         $stmt = $conn->prepare($sql);
                                         $bindResult = $stmt->bind_param("i", $fk_articolo);
@@ -81,18 +89,46 @@
                                         $resultArticolo = $stmt->get_result();
                                         $rowArticolo = $resultArticolo->fetch_assoc();
 
+                                        if ($stato == 'ritirato' && !$printedEffettuatiHeaderpren) {
+                                            echo '<div class="braker">
+                                                    <i class="bi bi-chevron-down"></i>
+                                                    <p><strong>Ritirati</strong></p>
+                                                    <i class="bi bi-chevron-down"></i>
+                                                </div>';
+                                            $printedEffettuatiHeaderpren = true;
+                                        }
+
                                         echo '<div class="box-data">
                                                 <div class="articolo">
                                                     <p><strong>'.$idprenotazione.'</strong></p>
                                                     <p>'.$rowArticolo['numero_inventario'].'</p>
                                                     <p>'.ucfirst($rowArticolo['nome']).'</p>
-                                                    <p>'.$dataritiro.'</p>
-                                                    <p>'.$datarestituzione.'</p>
-                                                </div>
-                                            </div>';
+                                                    <p>'.$dataritiro_format.'</p>
+                                                    <p>'.$datarestituzione_format.'</p>';
+                                                    if ($stato == 'da ritirare') {
+                                                        echo '<p class="trash">'.$stato.'</p>';
+                                                    }else{
+                                                        echo '<p class="disponibile">'.$stato.'</p>';
+                                                    }
+                                        echo '  </div>';
+                                                $data_odierna = date('Y-m-d');
+                                                if ($dataritiro > $data_odierna && $stato == 'da ritirare') {
+                                                    echo '<div class="btns">
+                                                            <div id="popup-overlay" style="display: none;"></div>
+                                                            <a href="#" class="open-popup-delete" data-id="'.$idprenotazione.'">
+                                                                <i class="bi bi-trash trash"></i>
+                                                            </a>
+                                                            <div id="popup-del" class="popup" style="display: none;">
+                                                                <div class="popup-content">
+                                                                </div>
+                                                            </div>
+                                                          </div>';
+                                                }
+                                        echo '</div>
+                                            <div class="line"></div>';
                                     }
                                 } else {
-                                    echo "<div class='no-data'><strong><p>Nessun articolo trovato</p></strong></div>";
+                                    echo "<div class='no-data'><strong><p>Nessuna prenotazione effettuata</p></strong></div>";
                                 }
                             } else {
                                 header('Location: login.php');
@@ -103,7 +139,7 @@
                 <div class="account-box prest-pren-margin">
                     <div class="box-title art">
                         <i class="bi bi-ui-checks icon-title"></i>
-                        <h1>Prestiti</h1>
+                        <h1>I tuoi prestiti</h1>
                     </div>
                     <div class="line"></div>
                     <div class="box-data top-tab">
@@ -120,18 +156,28 @@
                             if (isset($_SESSION['user_id'])) {
                                 $idutente = $_SESSION['user_id'];
 
-                                $sql = "SELECT * FROM prestiti WHERE fk_utente = ?";
+                                $sql = "SELECT * FROM prestiti WHERE fk_utente = ? ORDER BY FIELD(stato, 'non restituito', 'restituito'), data_inizio_prestito";
                                 $stmt = $conn->prepare($sql);
                                 $bindResult = $stmt->bind_param("i", $idutente);
                                 $executeResult = $stmt->execute();
                                 $result = $stmt->get_result();
+
+                                $printedEffettuatiHeaderpres = false;
+
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         $idprenotazione = $row['id_prestito'];
                                         $fk_articolo = $row['fk_articolo'];
                                         $dataritiro = $row['data_inizio_prestito'];
+                                        $dataritiro_format = DateTime::createFromFormat('Y-m-d', $row['data_inizio_prestito']);
+                                        $dataritiro_format = $dataritiro_format -> format('d-m-Y');
                                         $datascadenza = $row['data_scadenza_prestito'];
+                                        $datascadenza_format = DateTime::createFromFormat('Y-m-d', $row['data_scadenza_prestito']);
+                                        $datascadenza_format = $datascadenza_format -> format('d-m-Y');
                                         $datarestituzione = $row['data_restituzione'];
+                                        $datarestituzione_format = DateTime::createFromFormat('Y-m-d', $row['data_restituzione']);
+                                        $datarestituzione_format = $datarestituzione_format -> format('d-m-Y');
+                                        $statoprestito = $row['stato'];
                                         $sql = "SELECT * FROM articoli WHERE id_articolo = ?";
                                         $stmt = $conn->prepare($sql);
                                         $bindResult = $stmt->bind_param("i", $fk_articolo);
@@ -139,21 +185,32 @@
                                         $resultArticolo = $stmt->get_result();
                                         $rowArticolo = $resultArticolo->fetch_assoc();
 
+                                        if ($stato == 'restituito' && !$printedEffettuatiHeaderpres) {
+                                            echo '<div class="braker">
+                                                    <i class="bi bi-chevron-down"></i>
+                                                    <p><strong>Restituiti</strong></p>
+                                                    <i class="bi bi-chevron-down"></i>
+                                                </div>';
+                                            $printedEffettuatiHeaderpres = true;
+                                        }
+
                                         echo '<div class="box-data">
                                                 <div class="articolo">
                                                     <p><strong>'.$idprestito.'</strong></p>
                                                     <p>'.$rowArticolo['numero_inventario'].'</p>
                                                     <p>'.ucfirst($rowArticolo['nome']).'</p>
-                                                    <p>'.$dataritiro.'</p>
-                                                    <p>'.$datascadenza.'</p>';
+                                                    <p>'.$dataritiro_format.'</p>
+                                                    <p>'.$datascadenza_format.'</p>';
                                                     if (!empty($datarestituzione)) {
-                                                        echo '<p>'.$datarestituzione.'</p>';
+                                                        echo '<p>'.$datarestituzione_format.'</p>';
+                                                    }else{
+                                                        echo '<p class="trash">Non restituito</p>';
                                                     }
                                         echo '  </div>
                                             </div>';
                                     }
                                 } else {
-                                    echo "<div class='no-data'><strong><p>Nessun articolo trovato</p></strong></div>";
+                                    echo "<div class='no-data'><strong><p>Nessun prestito effettuato</p></strong></div>";
                                 }
                             } else {
                                 header('Location: login.php');
@@ -173,5 +230,50 @@
             window.location.href = `./search.php?search=${encodeURIComponent(searchValue)}`;
         }
     });
+</script>
+<script>
+    var linksdelete = document.querySelectorAll('.open-popup-delete');
+
+    function addClickListener(links, isDel, popupId) {
+        for (var i = 0; i < links.length; i++) {
+            links[i].addEventListener('click', function(event) {
+                event.preventDefault();
+
+                var id = this.getAttribute('data-id');
+
+                if(isDel){
+                    var formHtml = '<span class="close" onclick="closePopup(event, \'popup-del\')">&times;</span>';
+                    formHtml += '<form action="prenotazioni-delete.php" method="post">';
+                    formHtml += '<h3>Sei sicuro di voler eliminare la prenotazione con codice ' + id + '?</h3>';
+                    formHtml += '<input type="hidden" name="id" value="' + id + '">';
+                    formHtml += '<input type="submit" value="Elimina">';
+                    formHtml += '</form>';
+
+                    document.getElementById('popup-del').querySelector('.popup-content').innerHTML = formHtml;
+                }
+                
+                var popupElement = document.getElementById(popupId);
+                if (popupElement) {
+                    popupElement.style.display = 'block';
+                } else {
+                    console.error('Elemento con id ' + popupId + ' non trovato');
+                }
+                document.getElementById('popup-overlay').style.display = 'block';
+            });
+        }
+    }
+
+    addClickListener(linksdelete, true, 'popup-del'); 
+
+    function closePopup(event, popupId) {
+        var popupElement = document.getElementById(popupId);
+        if (popupElement) {
+            popupElement.style.display = 'none';
+            document.getElementById('popup-overlay').style.display = 'none';
+        } else {
+            console.error('Elemento con id ' + popupId + ' non trovato');
+        }
+    }
+
 </script>
 </html>

@@ -8,7 +8,7 @@ if (isset($_SESSION['user_id'])) {
 
     list($startDate, $endDate) = explode(' - ', $dates);
 
-    $sql = "INSERT INTO prenotazioni (fk_articolo, fk_utente, data_ritiro, data_restituzione) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO prenotazioni (fk_articolo, fk_utente, data_ritiro, data_restituzione, stato) VALUES (?, ?, ?, ?, 'da ritirare')";
     $stmt = $conn->prepare($sql);
 
     if ($stmt === false) {

@@ -70,7 +70,7 @@
                                         </div>
                                     </a>
                                     <div id="popup-overlay" style="display: none;"></div>
-                                    <div id="popup" style="display: none;">
+                                    <div id="popup" class="popup" style="display: none;">
                                         <div class="popup-content">
                                             <h3>Modifica foto profilo</h3>
                                             <span class="close" onclick="closePopup(event)">&times;</span>
