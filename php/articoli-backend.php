@@ -1,3 +1,17 @@
+<?php
+    session_start();
+    if (isset($_SESSION['user_type'])) {
+        $user_type = $_SESSION['user_type'];
+
+        if ($user_type == 'cliente') {
+            header('Location: access_denied.php');
+            exit();
+        }
+    } else {
+        header('Location: ../html/login.html');
+        exit();
+    }
+?>
 <html>
     <head>
         <title>Saro Articoli</title>
@@ -41,7 +55,6 @@
                     </a>
                 </li>
                 <?php
-                    session_start();
                     if ($_SESSION['user_type'] === 'admin') {
                         echo '<li>
                                 <a href="./utenti-backend.php">
@@ -52,7 +65,7 @@
                     }
                 ?>	
                 <li>
-                    <a href="#">
+                    <a href="./user.php">
                         <i class="bi bi-person"></i>
                         <span>Profile</span>
                     </a>
@@ -81,7 +94,7 @@
                                     <i class="bi-x-circle"></i>
                                 </a>
                                 <a href="?filter=" class="open-popup-art">
-                                    <i class="bi-box-seam"></i>
+                                    <i class="bi bi-boxes"></i>
                                 </a>
                                 <div id="popup-new" class="popup" style="display: none;">
                                     <div class="popup-content">
@@ -105,6 +118,12 @@
                             }
 
                             $sql = "SELECT * FROM " . $table;
+
+                            if ($_SESSION['user_type'] == 'operatore') {
+                                $operator_centroid = $_SESSION['operator_centroid'];
+                                $sql .= " WHERE fk_centro = " . $operator_centroid;
+                            }
+
                             $result = $conn->query($sql);
 
                             if ($result === false) {

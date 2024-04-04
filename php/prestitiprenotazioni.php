@@ -1,3 +1,17 @@
+<?php
+    session_start();
+    if (isset($_SESSION['user_type'])) {
+        $user_type = $_SESSION['user_type'];
+
+        if ($user_type != 'cliente') {
+            header('Location: access_denied.php');
+            exit();
+        }
+    } else {
+        header('Location: ../html/login.html');
+        exit();
+    }
+?>
 <html>
 <head>
     <meta charset="UTF-8" />
@@ -166,7 +180,7 @@
 
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
-                                        $idprenotazione = $row['id_prestito'];
+                                        $idprestito = $row['id_prestito'];
                                         $fk_articolo = $row['fk_articolo'];
                                         $dataritiro = $row['data_inizio_prestito'];
                                         $dataritiro_format = DateTime::createFromFormat('Y-m-d', $row['data_inizio_prestito']);
@@ -185,7 +199,7 @@
                                         $resultArticolo = $stmt->get_result();
                                         $rowArticolo = $resultArticolo->fetch_assoc();
 
-                                        if ($stato == 'restituito' && !$printedEffettuatiHeaderpres) {
+                                        if ($statoprestito == 'restituito' && !$printedEffettuatiHeaderpres) {
                                             echo '<div class="braker">
                                                     <i class="bi bi-chevron-down"></i>
                                                     <p><strong>Restituiti</strong></p>

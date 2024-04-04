@@ -1,3 +1,17 @@
+<?php
+    session_start();
+    if (isset($_SESSION['user_type'])) {
+        $user_type = $_SESSION['user_type'];
+
+        if ($user_type != 'admin') {
+            header('Location: access_denied.php');
+            exit();
+        }
+    } else {
+        header('Location: ../html/login.html');
+        exit();
+    }
+?>
 <html>
     <head>
         <title>Saro Utenti</title>
@@ -41,7 +55,6 @@
                     </a>
                 </li>
                 <?php
-                    session_start();
                     if ($_SESSION['user_type'] === 'admin') {
                         echo '<li>
                                 <a href="./utenti-backend.php">
@@ -52,7 +65,7 @@
                     }
                 ?>	
                 <li>
-                    <a href="#">
+                    <a href="./user.php">
                         <i class="bi bi-person"></i>
                         <span>Profile</span>
                     </a>

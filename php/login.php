@@ -12,14 +12,16 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
-    echo "User exists!";
     session_start();
     $row = $result->fetch_assoc();
     $_SESSION['user_id'] = $row['id_utente'];
     $_SESSION['user_type'] = $row['tipologia_utente'];
     if ($row['tipologia_utente'] === 'cliente') {
         header('Location: ../index.php');
-    } else {
+    } else{
+        if ($_SESSION['user_type'] === 'operatore') {
+            $_SESSION['operator_centroid'] = $row['fk_centro'];
+        }
         header('Location: ./backend.php');
     }
 } else {

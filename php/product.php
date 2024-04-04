@@ -47,6 +47,7 @@
     </nav>
     <section id="product">
         <?php
+        
         require_once './db.php';
 
         $productId = $_GET['productid'];
@@ -102,12 +103,16 @@
                                     <div><p>Prenota ora. Ritiro, in negozio:</p></div>
                                     <div><p>Oggi presso <a href='./php/map.php'>".ucfirst($centerName)."</a></p></div>
                                 </div>
-                            </div>
-                            <form method='post' class='prenotazione-form' action='./nuova-prenotazione.php'>
-                                <input type='text' id='datepickerButton' name='datepickerButton' placeholder='Seleziona le date'/>
+                            </div>";
+                                $disabled = '';
+                                if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'cliente') {
+                                    $disabled = 'disabled';
+                                }
+            echo"               <form method='post' class='prenotazione-form' action='./nuova-prenotazione.php'>
+                                <input type='text' id='datepickerButton' name='datepickerButton' placeholder='Seleziona le date' $disabled>
                                 <input type='hidden' id='productId' name='productId' value='$productId'>
                                 <div class='prenota'>
-                                    <button type='submit' class='button-21'>Prenota e ritira</button>
+                                    <button type='submit' class='button-21' $disabled>Prenota e ritira</button>
                                 </div>
                             </form>
                         </div>
@@ -184,6 +189,7 @@
                 });
             }
         });
+
     });
 </script>
 </html>

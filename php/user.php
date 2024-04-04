@@ -1,3 +1,10 @@
+<?php
+    session_start();
+    if (!isset($_SESSION['user_type'])) {
+        header('Location: ../html/login.html');
+        exit();
+    }
+?>
 <html>
 <head>
     <meta charset="UTF-8" />
@@ -6,40 +13,93 @@
 
     <link rel="stylesheet" type="text/css" href="../css/general.css">
     <link rel="stylesheet" type="text/css" href="../css/user.css">
+    <?php
+        if ($_SESSION['user_type'] != 'cliente') {
+            echo '<link rel="stylesheet" type="text/css" href="../css/backend.css">';
+        }
+    ?>
 </head>
 
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-links-left">
-                <a href="./articoli.php">Articoli</a>
-            </div>
-            <div class="navbar-logo">
-                <a href="../index.php"><img src="../img/logo/logo-black.svg" /></a>
-            </div>
-            <div class="navbar-icons">
-                <form id="searchForm" action="./search.php" method="GET">
-                    <div class="search-container">
-                        <i id="searchIcon" class="bi bi-search"></i>
-                        <div id="searchInput" class="search-input" style="display: none;">
-                            <input type="search" placeholder="Search..." id="searchField" style="padding-right: 25px;" name="search">
-                            <i class="bi bi-x" id="closeIcon"></i>
+    <?php
+        if ($_SESSION['user_type'] != 'cliente') {
+            echo '<nav>
+                    <ul>
+                        <li class="logo">
+                            <a href="./backend.php">
+                                <img src="../img/logo/favicon.svg">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="./backend.php">
+                                <i class="bi bi-house"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="./articoli-backend.php">
+                                <i class="bi bi-box-seam"></i>
+                                <span>Articoli</span>
+                            </a>
+                        </li>	
+                        <li>
+                            <a href="./prenotazioni-backend.php">
+                                <i class="bi bi-calendar-week"></i>
+                                <span>Prenotazioni</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="./prestiti-backend.php">
+                                <i class="bi bi-ui-checks"></i>
+                                <span>Prestiti</span>
+                            </a>
+                        </li>';
+                        if ($_SESSION['user_type'] === 'admin') {
+                            echo '<li>
+                                    <a href="./utenti-backend.php">
+                                        <i class="bi bi-people"></i>
+                                        <span>Utenti</span>
+                                    </a>
+                                </li>';
+                        }
+            echo'       <li>
+                            <a href="./user.php">
+                                <i class="bi bi-person"></i>
+                                <span>Profile</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>';
+        } else {
+            echo '<nav class="navbar">
+                    <div class="container">
+                        <div class="navbar-links-left">
+                            <a href="./articoli.php">Articoli</a>
                         </div>
+                        <div class="navbar-logo">
+                            <a href="../index.php"><img src="../img/logo/logo-black.svg" /></a>
+                        </div>
+                        <div class="navbar-icons">
+                            <form id="searchForm" action="./search.php" method="GET">
+                                <div class="search-container">
+                                    <i id="searchIcon" class="bi bi-search"></i>
+                                    <div id="searchInput" class="search-input" style="display: none;">
+                                        <input type="search" placeholder="Search..." id="searchField" style="padding-right: 25px;" name="search">
+                                        <i class="bi bi-x" id="closeIcon"></i>
+                                    </div>
+                                </div>
+                            </form>';
+                            if(isset($_SESSION['user_id'])) {
+                                echo '<a href="./prestitiprenotazioni.php"><i class="bi bi-folder"></i></a>
+                                      <a href="./user.php"><i class="bi bi-person"></i></a>';
+                            } else {
+                                echo '<button class="button-21" role="button" onclick="window.location.href=\'../html/login.html\'">Accedi</button>';
+                            }
+            echo'           </div>
                     </div>
-                </form>
-                <?php
-                session_start();
-
-                if(isset($_SESSION['user_id'])) {
-                    echo '<a href="./prestitiprenotazioni.php"><i class="bi bi-folder"></i></a>
-                          <a href="./user.php"><i class="bi bi-person"></i></a>';
-                } else {
-                    echo '<button class="button-21" role="button" onclick="window.location.href=\'../html/login.html\'">Accedi</button>';
-                }
-                ?>
-            </div>
-        </div>
-    </nav>
+                </nav>';
+        }
+    ?>
     <?php
         if(isset($_SESSION['user_id'])) {
 
